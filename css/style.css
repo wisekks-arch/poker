@@ -503,21 +503,23 @@ body {
         0 0 0 10px #1a0d06,
         0 0 0 15px rgba(245, 197, 24, 0.4);
 
-    /* 라스베가스 VIP 딥 에메랄드 벨벳 펠트 질감 */
-    background: radial-gradient(ellipse at 50% 45%, #187a4d 0%, #105936 40%, #0a3b23 75%, #051e12 100%);
+    /* 🔥 100,000,000% 럭셔리 마카오/라스베가스 VIP 로열 에메랄드 벨벳 펠트 질감 */
+    background: 
+        radial-gradient(ellipse at 50% 38%, rgba(25, 215, 120, 0.26) 0%, transparent 68%),
+        radial-gradient(ellipse at 50% 46%, #129c5a 0%, #0c7a44 26%, #075a31 54%, #04381e 80%, #011d0e 100%);
     overflow: hidden;
     margin-bottom: 24px;
 }
 
-/* 펠트 테이블 조명 스포트라이트 (천장 샹들리에 빛 반사) */
+/* 펠트 테이블 조명 스포트라이트 (천장 샹들리에 빛 반사 & 에메랄드 골드 광채) */
 .poker-table-wrapper::before {
     content: '';
     position: absolute;
-    top: 5%;
-    left: 15%;
-    right: 15%;
-    height: 60%;
-    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.14) 0%, rgba(245, 197, 24, 0.06) 50%, transparent 80%);
+    top: 2%;
+    left: 10%;
+    right: 10%;
+    height: 70%;
+    background: radial-gradient(ellipse at 50% 38%, rgba(255, 255, 255, 0.2) 0%, rgba(120, 255, 185, 0.1) 45%, rgba(245, 197, 24, 0.06) 70%, transparent 90%);
     pointer-events: none;
     z-index: 2;
 }

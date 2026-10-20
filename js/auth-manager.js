@@ -226,6 +226,59 @@ class AuthManager {
         this.saveUsers(users);
         return { success: true, message: '회원이 삭제되었습니다.' };
     }
+
+    // 🔥 1. 아이디(이메일) 찾기 (닉네임 + 연락처로 검색)
+    findUsername(nickname, phone) {
+        const users = this.getUsers();
+        const user = users.find(u => 
+            u.nickname.toLowerCase() === nickname.trim().toLowerCase() &&
+            (phone.trim() === '' || u.phone.replace(/[^0-9]/g, '') === phone.replace(/[^0-9]/g, ''))
+        );
+
+        if (!user) {
+            return { success: false, message: '입력하신 정보와 일치하는 회원 아이디를 찾을 수 없습니다.' };
+        }
+
+        // 아이디 앞 3글자 외 마스킹 처리 (보안)
+        const u = user.username;
+        let masked = u;
+        if (u.includes('@')) {
+            const [local, domain] = u.split('@');
+            masked = local.slice(0, 3) + '***@' + domain;
+        } else if (u.length > 4) {
+            masked = u.slice(0, 3) + '***' + u.slice(-1);
+        }
+
+        return { success: true, username: user.username, maskedUsername: masked };
+    }
+
+    // 🔥 2. 비밀번호 찾기 (아이디/이메일로 임시 비밀번호 발급 및 이메일 발송 시뮬레이션)
+    issueTemporaryPassword(username) {
+        const users = this.getUsers();
+        const user = users.find(u => u.username.toLowerCase() === username.trim().toLowerCase());
+
+        if (!user) {
+            return { success: false, message: '등록되지 않은 아이디(이메일)입니다. 확인 후 다시 입력해 주세요.' };
+        }
+
+        // 영문 대소문자 + 숫자 조합의 6자리 임시 비밀번호 생성
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+        let tempPassword = '';
+        for (let i = 0; i < 6; i++) {
+            tempPassword += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+
+        // 유저 비밀번호를 임시 비밀번호로 갱신
+        user.password = tempPassword;
+        this.saveUsers(users);
+
+        return { 
+            success: true, 
+            username: user.username, 
+            tempPassword: tempPassword,
+            message: `등록하신 아이디(이메일) [${user.username}]로 임시 비밀번호가 안전하게 발송되었습니다.`
+        };
+    }
 }
 
 window.authManager = new AuthManager();

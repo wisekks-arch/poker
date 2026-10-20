@@ -1,4 +1,17 @@
-// js/main.js - 메인 애플리케이션, 회원/어드민 시스템 및 테이블 참여 컨트롤러
+// js/main.js - 메인 애플리케이션, 회원/어드민 시스템, 계정찾기 및 테이블 참여 컨트롤러
+
+// 🔥 브라우저 기본 URL 헤더 팝업(https://wisekks-arch.github.io의 메시지) 100% 원천 봉쇄
+window.alert = function(msg) {
+    if (window.app && typeof window.app.showModalAlert === 'function') {
+        window.app.showModalAlert(String(msg));
+    } else {
+        console.warn('[Alert Blocked]:', msg);
+    }
+};
+window.confirm = function(msg) {
+    console.warn('[Confirm Blocked]:', msg);
+    return true;
+};
 
 class App {
     constructor() {
@@ -34,33 +47,52 @@ class App {
                 };
             }
         }
-        return {
-            id: 'user_default',
-            name: '골드포커왕',
-            username: 'vip_player',
-            money: 10000000,
-            role: 'user'
-        };
+        return null; // 비로그인 / 로그아웃 상태
     }
 
     saveUser(user) {
         this.user = user;
-        if (window.authManager) {
+        if (user && window.authManager) {
             window.authManager.updateMoney(user.id, user.money);
         }
         this.updateUserUI();
     }
 
     updateUserUI() {
-        if (this.dom && this.user) {
+        if (!this.dom) return;
+        if (this.user) {
+            // 로그인 상태
             if (this.dom.userMoneyDisplay) {
                 this.dom.userMoneyDisplay.textContent = this.user.money.toLocaleString() + '원';
             }
             if (this.dom.headerUserNickname) {
                 this.dom.headerUserNickname.textContent = this.user.name;
             }
+            if (this.dom.btnOpenProfile) {
+                this.dom.btnOpenProfile.style.display = 'inline-flex';
+            }
+            if (this.dom.btnAuthAction) {
+                this.dom.btnAuthAction.textContent = '로그아웃';
+            }
             if (this.dom.btnOpenAdmin) {
                 this.dom.btnOpenAdmin.style.display = (this.user.role === 'admin') ? 'inline-block' : 'none';
+            }
+        } else {
+            // 비로그인 / 로그아웃 상태
+            if (this.dom.userMoneyDisplay) {
+                this.dom.userMoneyDisplay.textContent = '0원';
+            }
+            if (this.dom.headerUserNickname) {
+                this.dom.headerUserNickname.textContent = '로그인 필요';
+            }
+            if (this.dom.btnOpenProfile) {
+                this.dom.btnOpenProfile.style.display = 'none';
+            }
+            if (this.dom.btnAuthAction) {
+                this.dom.btnAuthAction.textContent = '로그인 / 회원가입';
+            }
+            if (this.dom.btnOpenAdmin) {
+                this.dom.btnOpenAdmin.style.display = 'none';
             }
         }
     }
@@ -98,19 +130,19 @@ class App {
             tableRoomSeed: document.getElementById('tableRoomSeed'),
             tableRoomMax: document.getElementById('tableRoomMax'),
             btnLeaveRoom: document.getElementById('btnLeaveRoom'),
-            btnJoinGame: document.getElementById('btnJoinGame'),
             btnStandUp: document.getElementById('btnStandUp'),
+            btnJoinGame: document.getElementById('btnJoinGame'),
+
+            // 테이블 펠트 & 좌석
             seatsContainer: document.getElementById('seatsContainer'),
-            tablePotDisplay: document.getElementById('tablePotDisplay'),
-            tableStreetStatus: document.getElementById('tableStreetStatus'),
-            communityCardBox: document.getElementById('communityCardBox'),
-            communityCardSlot: document.getElementById('communityCardSlot'),
-            winnerBanner: document.getElementById('winnerBanner'),
+            tablePotValue: document.getElementById('tablePotValue'),
+            tableStreetText: document.getElementById('tableStreetText'),
+            winnerOverlay: document.getElementById('winnerOverlay'),
             winnerNameText: document.getElementById('winnerNameText'),
             winnerHandText: document.getElementById('winnerHandText'),
             winnerPrizeText: document.getElementById('winnerPrizeText'),
 
-            // 🔥 참여 대기 전용 버튼 (중앙 & 하단)
+            // 참여 대기 전용 버튼 (중앙 & 하단)
             tableCenterJoinContainer: document.getElementById('tableCenterJoinContainer'),
             btnTableCenterJoin: document.getElementById('btnTableCenterJoin'),
             bottomJoinBanner: document.getElementById('bottomJoinBanner'),
@@ -147,6 +179,20 @@ class App {
             loginUsername: document.getElementById('loginUsername'),
             loginPassword: document.getElementById('loginPassword'),
             linkGoRegister: document.getElementById('linkGoRegister'),
+            linkGoLogin: document.getElementById('linkGoLogin'),
+
+            // 계정 찾기 모달
+            findAccountModal: document.getElementById('findAccountModal'),
+            btnCloseFindAccount: document.getElementById('btnCloseFindAccount'),
+            linkGoFindAccount: document.getElementById('linkGoFindAccount'),
+            linkBackToLoginFromFind: document.getElementById('linkBackToLoginFromFind'),
+            tabFindId: document.getElementById('tabFindId'),
+            tabFindPw: document.getElementById('tabFindPw'),
+            formFindId: document.getElementById('formFindId'),
+            findIdNickname: document.getElementById('findIdNickname'),
+            findIdPhone: document.getElementById('findIdPhone'),
+            formFindPw: document.getElementById('formFindPw'),
+            findPwUsername: document.getElementById('findPwUsername'),
 
             profileModal: document.getElementById('profileModal'),
             btnCloseProfile: document.getElementById('btnCloseProfile'),
@@ -166,8 +212,64 @@ class App {
             adminUserTableBody: document.getElementById('adminUserTableBody'),
             adminRoomsListContainer: document.getElementById('adminRoomsListContainer'),
             btnAdminRefreshUsers: document.getElementById('btnAdminRefreshUsers'),
-            btnAdminResetAllRooms: document.getElementById('btnAdminResetAllRooms')
+            btnAdminResetAllRooms: document.getElementById('btnAdminResetAllRooms'),
+
+            // 커스텀 다이얼로그 모달 (URL 주소 없는 팝업)
+            customAlertModal: document.getElementById('customAlertModal'),
+            customAlertIcon: document.getElementById('customAlertIcon'),
+            customAlertTitle: document.getElementById('customAlertTitle'),
+            customAlertMessage: document.getElementById('customAlertMessage'),
+            btnCustomAlertConfirm: document.getElementById('btnCustomAlertConfirm'),
+            customConfirmModal: document.getElementById('customConfirmModal'),
+            customConfirmTitle: document.getElementById('customConfirmTitle'),
+            customConfirmMessage: document.getElementById('customConfirmMessage'),
+            btnCustomConfirmCancel: document.getElementById('btnCustomConfirmCancel'),
+            btnCustomConfirmOk: document.getElementById('btnCustomConfirmOk')
         };
+
+        if (this.dom.btnCustomAlertConfirm) {
+            this.dom.btnCustomAlertConfirm.addEventListener('click', () => {
+                if (this.dom.customAlertModal) this.dom.customAlertModal.classList.remove('active');
+            });
+        }
+    }
+
+    // 커스텀 알림 모달 (브라우저 도메인 URL 메시지 일체 없음)
+    showModalAlert(message, title = '알 림', icon = '👑') {
+        if (!this.dom || !this.dom.customAlertModal) {
+            return;
+        }
+        if (this.dom.customAlertIcon) this.dom.customAlertIcon.textContent = icon;
+        if (this.dom.customAlertTitle) this.dom.customAlertTitle.textContent = title;
+        if (this.dom.customAlertMessage) this.dom.customAlertMessage.textContent = message;
+        this.dom.customAlertModal.classList.add('active');
+    }
+
+    // 커스텀 확인 모달
+    showModalConfirm(message, onConfirm, title = '확 인') {
+        if (!this.dom || !this.dom.customConfirmModal) {
+            if (onConfirm) onConfirm();
+            return;
+        }
+        if (this.dom.customConfirmTitle) this.dom.customConfirmTitle.textContent = title;
+        if (this.dom.customConfirmMessage) this.dom.customConfirmMessage.textContent = message;
+        this.dom.customConfirmModal.classList.add('active');
+
+        const onOk = () => {
+            this.dom.customConfirmModal.classList.remove('active');
+            cleanup();
+            if (onConfirm) onConfirm();
+        };
+        const onCancel = () => {
+            this.dom.customConfirmModal.classList.remove('active');
+            cleanup();
+        };
+        const cleanup = () => {
+            this.dom.btnCustomConfirmOk.removeEventListener('click', onOk);
+            this.dom.btnCustomConfirmCancel.removeEventListener('click', onCancel);
+        };
+        this.dom.btnCustomConfirmOk.addEventListener('click', onOk);
+        this.dom.btnCustomConfirmCancel.addEventListener('click', onCancel);
     }
 
     bindEvents() {
@@ -178,10 +280,15 @@ class App {
 
         // 1,000만원 무료 리필
         this.dom.btnRefillMoney.addEventListener('click', () => {
+            if (!this.user) {
+                this.showModalAlert('로그인 후 무료 충전 혜택을 이용하실 수 있습니다.', '로그인 필요', '🔒');
+                this.dom.loginModal.classList.add('active');
+                return;
+            }
             this.user.money += 10000000;
             this.saveUser(this.user);
             if (window.soundManager) window.soundManager.playWin();
-            alert('🎉 회원 감사 10,000,000원의 게임머니가 무료 충전되었습니다!');
+            this.showModalAlert('🎉 회원 감사 10,000,000원의 게임머니가 무료 충전되었습니다!', '충전 완료', '💰');
         });
 
         // 사운드 토글
@@ -202,6 +309,11 @@ class App {
 
         // 방 만들기 모달
         this.dom.btnOpenCreateRoom.addEventListener('click', () => {
+            if (!this.user) {
+                this.showModalAlert('게임방 개설은 로그인 후 이용 가능합니다.', '로그인 필요', '🔒');
+                this.dom.loginModal.classList.add('active');
+                return;
+            }
             this.dom.createRoomModal.classList.add('active');
         });
         this.dom.btnCloseCreateRoom.addEventListener('click', () => {
@@ -237,11 +349,16 @@ class App {
         // 🔥 참여 대기 액션 핸들러 (상단, 중앙, 하단 공통)
         const triggerJoinWait = () => {
             if (!this.currentEngine) return;
+            if (!this.user) {
+                this.showModalAlert('게임에 참여하려면 먼저 로그인이 필요합니다.', '로그인 필요', '🔒');
+                this.dom.loginModal.classList.add('active');
+                return;
+            }
             const res = this.currentEngine.reserveUserSeat(this.user);
             if (res.success) {
                 if (window.soundManager) window.soundManager.playChip();
                 this.renderTableState();
-                alert('✅ 참석 대기가 완료되었습니다! 진행 중인 판이 끝나면 다음 판에 즉시 착석되어 카드가 지급됩니다.');
+                this.showModalAlert('✅ 참석 대기가 완료되었습니다!\n진행 중인 판이 끝나면 다음 판에 즉시 착석되어 카드가 지급됩니다.', '참석 대기 접수', '⚡');
             }
         };
 
@@ -302,6 +419,7 @@ class App {
         // 프로필(닉네임/비번) 수정 제출
         this.dom.formUpdateProfile.addEventListener('submit', (e) => {
             e.preventDefault();
+            if (!this.user) return;
             const newNick = this.dom.profNickname.value.trim();
             const newPass = this.dom.profNewPassword.value.trim();
             const res = window.authManager.updateProfile(this.user.id, newNick, newPass);
@@ -309,20 +427,23 @@ class App {
                 this.user = this.loadUser();
                 this.updateUserUI();
                 this.dom.profileModal.classList.remove('active');
-                alert(res.message);
+                this.showModalAlert(res.message, '프로필 수정 완료', '✅');
             } else {
-                alert(res.message);
+                this.showModalAlert(res.message, '수정 실패', '⚠️');
             }
         });
 
-        // 로그인 / 로그아웃 버튼
+        // 로그인 / 로그아웃 버튼 (로그아웃 즉시 로그인 모달 표시)
         this.dom.btnAuthAction.addEventListener('click', () => {
             const current = window.authManager.getCurrentUser();
             if (current) {
-                if (confirm('로그아웃 하시겠습니까?')) {
-                    window.authManager.logout();
-                    location.reload();
+                window.authManager.logout();
+                this.user = null;
+                this.updateUserUI();
+                if (this.currentEngine) {
+                    this.leaveTable();
                 }
+                this.dom.loginModal.classList.add('active');
             } else {
                 this.dom.loginModal.classList.add('active');
             }
@@ -337,6 +458,89 @@ class App {
             this.dom.loginModal.classList.remove('active');
             this.dom.registerModal.classList.add('active');
         });
+        if (this.dom.linkGoLogin) {
+            this.dom.linkGoLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.dom.registerModal.classList.remove('active');
+                this.dom.loginModal.classList.add('active');
+            });
+        }
+
+        // 아이디 / 비밀번호 찾기 모달 열기
+        if (this.dom.linkGoFindAccount) {
+            this.dom.linkGoFindAccount.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.dom.loginModal.classList.remove('active');
+                this.dom.findAccountModal.classList.add('active');
+            });
+        }
+        if (this.dom.btnCloseFindAccount) {
+            this.dom.btnCloseFindAccount.addEventListener('click', () => {
+                this.dom.findAccountModal.classList.remove('active');
+            });
+        }
+        if (this.dom.linkBackToLoginFromFind) {
+            this.dom.linkBackToLoginFromFind.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.dom.findAccountModal.classList.remove('active');
+                this.dom.loginModal.classList.add('active');
+            });
+        }
+
+        // 아이디/비밀번호 찾기 모달 내 탭 전환
+        if (this.dom.tabFindId && this.dom.tabFindPw) {
+            this.dom.tabFindId.addEventListener('click', () => {
+                this.dom.tabFindId.style.background = 'var(--gold-gradient)';
+                this.dom.tabFindId.style.color = '#000';
+                this.dom.tabFindId.style.fontWeight = '800';
+                this.dom.tabFindPw.style.background = 'rgba(255,255,255,0.08)';
+                this.dom.tabFindPw.style.color = '#fff';
+                this.dom.tabFindPw.style.fontWeight = 'normal';
+                this.dom.formFindId.style.display = 'block';
+                this.dom.formFindPw.style.display = 'none';
+            });
+            this.dom.tabFindPw.addEventListener('click', () => {
+                this.dom.tabFindPw.style.background = 'var(--gold-gradient)';
+                this.dom.tabFindPw.style.color = '#000';
+                this.dom.tabFindPw.style.fontWeight = '800';
+                this.dom.tabFindId.style.background = 'rgba(255,255,255,0.08)';
+                this.dom.tabFindId.style.color = '#fff';
+                this.dom.tabFindId.style.fontWeight = 'normal';
+                this.dom.formFindId.style.display = 'none';
+                this.dom.formFindPw.style.display = 'block';
+            });
+        }
+
+        // 1. 아이디 찾기 폼 제출
+        if (this.dom.formFindId) {
+            this.dom.formFindId.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const nick = this.dom.findIdNickname.value.trim();
+                const phone = this.dom.findIdPhone ? this.dom.findIdPhone.value.trim() : '';
+                const res = window.authManager.findUsername(nick, phone);
+                if (res.success) {
+                    this.showModalAlert(`조회 결과 회원님의 아이디(이메일)는 다음과 같습니다:\n\n👉 [ ${res.maskedUsername} ]`, '아이디 찾기 결과', '🔍');
+                } else {
+                    this.showModalAlert(res.message, '조회 실패', '⚠️');
+                }
+            });
+        }
+
+        // 2. 비밀번호 찾기 (이메일 발송 시뮬레이션) 폼 제출
+        if (this.dom.formFindPw) {
+            this.dom.formFindPw.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const u = this.dom.findPwUsername.value.trim();
+                const res = window.authManager.issueTemporaryPassword(u);
+                if (res.success) {
+                    this.showModalAlert(`📧 입력하신 아이디(이메일) [${res.username}]로 임시 비밀번호가 안전하게 발송되었습니다!\n\n임시 비밀번호: [ ${res.tempPassword} ]\n로그인 후 프로필 관리에서 새 비밀번호로 변경해 주세요.`, '이메일 발송 완료', '✉️');
+                    this.dom.findAccountModal.classList.remove('active');
+                    this.dom.loginModal.classList.add('active');
+                } else {
+                    this.showModalAlert(res.message, '발급 실패', '⚠️');
+                }
+            });
+        }
 
         // 회원가입 폼 제출
         this.dom.formRegister.addEventListener('submit', (e) => {
@@ -352,9 +556,9 @@ class App {
                 this.updateUserUI();
                 this.dom.registerModal.classList.remove('active');
                 if (window.soundManager) window.soundManager.playWin();
-                alert(`🎉 ${res.message}\n환영합니다, [${nick}]님!`);
+                this.showModalAlert(`🎉 ${res.message}\n환영합니다, [${nick}]님! (1,000만 원 지급 완료)`, '회원가입 완료', '👑');
             } else {
-                alert(res.message);
+                this.showModalAlert(res.message, '가입 실패', '⚠️');
             }
         });
 
@@ -374,16 +578,16 @@ class App {
                 this.user = this.loadUser();
                 this.updateUserUI();
                 this.dom.loginModal.classList.remove('active');
-                alert(`반갑습니다, [${res.user.nickname}]님!`);
+                this.showModalAlert(`반갑습니다, [${res.user.nickname}]님!\n즐거운 7포커 게임 되십시오.`, '로그인 성공', '👋');
             } else {
-                alert(res.message);
+                this.showModalAlert(res.message, '로그인 실패', '⚠️');
             }
         });
 
         // 어드민 대시보드 열기
         this.dom.btnOpenAdmin.addEventListener('click', () => {
             if (!window.authManager.isAdmin()) {
-                alert('관리자 권한이 없습니다.');
+                this.showModalAlert('관리자 권한이 없습니다.', '접근 제한', '🚫');
                 return;
             }
             this.renderAdminUsers();
@@ -419,11 +623,11 @@ class App {
 
         // 전체 게임방 강제 리셋
         this.dom.btnAdminResetAllRooms.addEventListener('click', () => {
-            if (confirm('모든 기본 게임방을 초기화하고 재시작하시겠습니까?')) {
+            this.showModalConfirm('모든 기본 게임방을 초기화하고 재시작하시겠습니까?', () => {
                 window.roomManager.initDefaultRooms();
                 this.renderAdminRooms();
-                alert('10개 게임방이 성공적으로 리셋되었습니다.');
-            }
+                this.showModalAlert('10개 게임방이 성공적으로 리셋되었습니다.', '리셋 완료', '🔄');
+            }, '방 초기화 확인');
         });
     }
 
@@ -435,23 +639,20 @@ class App {
         users.forEach(u => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td><strong>${u.username}</strong></td>
-                <td>${u.nickname}</td>
+                <td>${u.username}</td>
+                <td><strong>${u.nickname}</strong></td>
+                <td><span class="${u.role === 'admin' ? 'badge-admin' : 'badge-user'}">${u.role === 'admin' ? '관리자' : '일반회원'}</span></td>
                 <td style="color: var(--gold-bright); font-weight: 800;">${u.money.toLocaleString()}원</td>
-                <td><span class="${u.role === 'admin' ? 'badge-admin' : 'badge-user'}">${u.role}</span></td>
-                <td><span style="color: ${u.isBlocked ? '#ff4757' : '#2ed573'}; font-weight: 700;">${u.isBlocked ? '이용정지' : '정상'}</span></td>
+                <td>${u.isBlocked ? '<span style="color:#ff4757; font-weight:800;">이용정지</span>' : '<span style="color:#2ed573;">정상</span>'}</td>
                 <td>
                     <button class="btn-admin-action btn-admin-add" data-id="${u.id}" data-act="add1000">+1천만</button>
                     <button class="btn-admin-action btn-admin-add" data-id="${u.id}" data-act="add1억">+1억</button>
                     <button class="btn-admin-action btn-admin-sub" data-id="${u.id}" data-act="sub1000">-1천만</button>
-                </td>
-                <td>
-                    <button class="btn-admin-action btn-admin-block" data-id="${u.id}" data-act="toggleBlock">${u.isBlocked ? '해제' : '차단'}</button>
-                    <button class="btn-admin-action" style="background: #576574; color:#fff;" data-id="${u.id}" data-act="delete">탈퇴</button>
+                    <button class="btn-admin-action btn-admin-block" data-id="${u.id}" data-act="toggleBlock">${u.isBlocked ? '해제' : '정지'}</button>
+                    ${u.role !== 'admin' ? `<button class="btn-admin-action btn-admin-block" data-id="${u.id}" data-act="delete" style="background:#333;">탈퇴</button>` : ''}
                 </td>
             `;
 
-            // 머니 조정 및 제재 이벤트
             tr.querySelectorAll('.btn-admin-action').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const id = btn.getAttribute('data-id');
@@ -462,9 +663,14 @@ class App {
                     else if (act === 'sub1000') window.authManager.adminAdjustMoney(id, -10000000);
                     else if (act === 'toggleBlock') window.authManager.adminToggleBlock(id);
                     else if (act === 'delete') {
-                        if (confirm(`회원 [${u.nickname}]을 강제 탈퇴시키겠습니까?`)) {
+                        this.showModalConfirm(`회원 [${u.nickname}]을 정말 강제 탈퇴시키겠습니까?`, () => {
                             window.authManager.adminDeleteUser(id);
-                        }
+                            this.user = this.loadUser();
+                            this.updateUserUI();
+                            this.renderAdminUsers();
+                            this.showModalAlert(`회원 [${u.nickname}]이 탈퇴 처리되었습니다.`, '탈퇴 완료', '🗑️');
+                        }, '강제 탈퇴 확인');
+                        return;
                     }
 
                     this.user = this.loadUser();
@@ -483,26 +689,36 @@ class App {
         this.dom.adminRoomsListContainer.innerHTML = '';
 
         rooms.forEach(r => {
-            const div = document.createElement('div');
-            div.style.cssText = 'background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 18px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;';
-            div.innerHTML = `
+            const card = document.createElement('div');
+            card.style.background = 'rgba(255,255,255,0.04)';
+            card.style.border = '1px solid rgba(255,255,255,0.08)';
+            card.style.padding = '12px 16px';
+            card.style.borderRadius = '12px';
+            card.style.display = 'flex';
+            card.style.justifyContent = 'space-between';
+            card.style.alignItems = 'center';
+
+            card.innerHTML = `
                 <div>
-                    <strong>${r.name}</strong> (${r.currentPlayers}/${r.maxPlayers}명)
-                    <div style="font-size: 12px; color: var(--text-dim); margin-top: 2px;">
-                        시드머니: ${r.seedMoney.toLocaleString()}원 | 상태: ${r.streetText}
+                    <span style="color: #fff; font-weight: 800;">${r.name}</span>
+                    <span style="font-size: 12px; color: var(--gold-bright); margin-left: 8px;">(시드: ${r.seedMoney.toLocaleString()}원)</span>
+                    <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">
+                        참여인원: ${r.playerCount}/${r.maxPlayers}명 | 스트리트: ${r.street === 0 ? '대기' : r.street + '구'} | 누적 팟: ${r.pot.toLocaleString()}원
                     </div>
                 </div>
-                <div style="text-align: right;">
-                    <span style="color: var(--gold-bright); font-weight: 800; font-size: 15px;">POT: ${r.pot.toLocaleString()}원</span>
-                </div>
+                <button class="btn-enter-room" data-room="${r.id}" style="padding: 5px 12px; font-size: 12px;">입장 모니터링</button>
             `;
-            this.dom.adminRoomsListContainer.appendChild(div);
+
+            card.querySelector('.btn-enter-room').addEventListener('click', () => {
+                this.dom.adminModal.classList.remove('active');
+                this.enterTable(r.id);
+            });
+
+            this.dom.adminRoomsListContainer.appendChild(card);
         });
     }
 
-    // ==========================================================
-    // 로비 화면 렌더링
-    // ==========================================================
+    // 로비 방 목록 렌더링
     renderLobby() {
         const rooms = window.roomManager.getRoomList();
         this.dom.roomListGrid.innerHTML = '';
@@ -510,11 +726,16 @@ class App {
         rooms.forEach(room => {
             const card = document.createElement('div');
             card.className = 'room-card';
+
+            let streetLabel = '게임 대기 중';
+            if (room.street === 3) streetLabel = '3구 초이스';
+            else if (room.street > 3) streetLabel = `${room.street}구 배팅`;
+
             card.innerHTML = `
                 <div>
                     <div class="room-card-header">
                         <div class="room-title">${room.name}</div>
-                        <span class="room-players-badge">${room.currentPlayers}/${room.maxPlayers}명</span>
+                        <span class="room-players-badge">${room.playerCount}/${room.maxPlayers}명</span>
                     </div>
                     <div class="room-meta-info">
                         <div class="meta-row">
@@ -528,104 +749,98 @@ class App {
                     </div>
                 </div>
                 <div class="room-card-footer">
-                    <span class="street-badge">${room.streetText}</span>
-                    <button class="btn-enter-room">입장하기 →</button>
+                    <span class="street-badge">${streetLabel}</span>
+                    <button class="btn-enter-room" data-room="${room.id}">입장하기 →</button>
                 </div>
             `;
-            card.addEventListener('click', () => {
+
+            card.querySelector('.btn-enter-room').addEventListener('click', () => {
                 this.enterTable(room.id);
             });
+
             this.dom.roomListGrid.appendChild(card);
         });
     }
 
-    // ==========================================================
-    // 테이블 화면 진입 & 렌더링
-    // ==========================================================
+    // 테이블 뷰로 진입
     enterTable(roomId) {
-        const engine = window.roomManager.enterRoom(roomId, this.user);
+        const engine = window.roomManager.getRoom(roomId);
         if (!engine) return;
 
         this.currentEngine = engine;
+        engine.setBackground(false);
+
         this.dom.lobbyView.style.display = 'none';
         this.dom.tableView.style.display = 'block';
 
         this.dom.tableRoomTitle.textContent = engine.roomName;
-        this.dom.tableRoomSeed.textContent = `시드: ${engine.seedMoney.toLocaleString()}원`;
-        this.dom.tableRoomMax.textContent = `최대 ${engine.maxPlayers}인 테이블`;
+        this.dom.tableRoomSeed.textContent = engine.seedMoney.toLocaleString() + '원';
+        this.dom.tableRoomMax.textContent = engine.maxPlayers + '인 룸';
 
-        // 테이블 상태 변경 시 UI 동기화
-        engine.onUpdate(() => this.renderTableState());
-        this.renderTableState();
+        engine.onUpdate = (state) => {
+            this.renderTableState(state);
+        };
+
+        this.renderTableState(engine.getState());
     }
 
+    // 로비로 퇴장
     leaveTable() {
-        if (!this.currentEngine) return;
-        window.roomManager.leaveRoom();
-        this.currentEngine = null;
+        if (this.currentEngine) {
+            this.currentEngine.setBackground(true);
+            this.currentEngine.onUpdate = null;
+            this.currentEngine = null;
+        }
+
         this.dom.tableView.style.display = 'none';
         this.dom.lobbyView.style.display = 'block';
         this.renderLobby();
     }
 
     getUserPlayer() {
-        if (!this.currentEngine) return null;
-        return this.currentEngine.players.find(p => p && !p.isBot);
+        if (!this.currentEngine || !this.user) return null;
+        return this.currentEngine.players.find(p => p && p.id === this.user.id) || null;
     }
 
-    // 세븐포커 6인 테이블 렌더링
-    renderTableState() {
+    // 테이블 실시간 UI 업데이트
+    renderTableState(state = null) {
         if (!this.currentEngine) return;
-        const state = this.currentEngine.getState();
+        if (!state) state = this.currentEngine.getState();
+
+        this.dom.tablePotValue.textContent = state.pot.toLocaleString() + '원';
+
+        let streetText = '판 시작 준비';
+        if (state.phase === 'CHOICE_OPEN') streetText = '3구 오픈 선택 중...';
+        else if (state.street >= 3) streetText = `${state.street}구 스트리트 배팅`;
+        if (state.phase === 'SHOWDOWN') streetText = '쇼다운 (결과 발표)';
+        this.dom.tableStreetText.textContent = streetText;
+
         const userPlayer = this.getUserPlayer();
-
-        // 1. 중앙 팟 & 스트리트 갱신
-        this.dom.tablePotDisplay.textContent = `${state.pot.toLocaleString()}원`;
-
-        let streetDesc = '대기 중';
-        if (state.street === 3) streetDesc = '3구 초이스 (1장 오픈 선택)';
-        else if (state.street === 4) streetDesc = '4구 배팅 라운드';
-        else if (state.street === 5) streetDesc = '5구 배팅 라운드';
-        else if (state.street === 6) streetDesc = '6구 배팅 라운드';
-        else if (state.street === 7) streetDesc = '7구 히든(리버) 최종 배팅';
-        else if (state.street === 8) streetDesc = '쇼다운! 승자 판정';
-        this.dom.tableStreetStatus.textContent = streetDesc;
-
-        // 2. 쇼다운 승자 배너
-        if (state.winnerInfo && state.street === 8) {
-            const w = state.winnerInfo.winners[0];
-            this.dom.winnerNameText.textContent = w.name;
-            this.dom.winnerHandText.textContent = w.handName;
-            this.dom.winnerPrizeText.textContent = `+${w.moneyWon.toLocaleString()}원 획득!`;
-            this.dom.winnerBanner.classList.add('show');
-        } else {
-            this.dom.winnerBanner.classList.remove('show');
-        }
-
-        // 3. 6인 좌석 타원형 배치 렌더링
+        this.updateJoinButtons(userPlayer);
         this.renderSeats(state, userPlayer);
-
-        // 4. 배팅 컨트롤 패널 & 참여 대기 버튼 가시성 업데이트
         this.updateBettingControls(state, userPlayer);
 
-        // 5. 유저 머니 및 참석/관전 버튼 상태 동기화
+        if (state.phase === 'SHOWDOWN' && state.winnerInfo) {
+            this.showWinnerOverlay(state.winnerInfo);
+        } else {
+            this.dom.winnerOverlay.style.display = 'none';
+        }
+
         if (userPlayer) {
             this.user.money = userPlayer.money;
             this.saveUser(this.user);
+        }
+    }
 
-            // 이미 앉아있는 경우
+    // 참여 대기 버튼 토글 (플레이어 상태에 따라)
+    updateJoinButtons(userPlayer) {
+        if (userPlayer) {
             if (this.dom.btnJoinGame) this.dom.btnJoinGame.style.display = 'none';
             if (this.dom.tableCenterJoinContainer) this.dom.tableCenterJoinContainer.style.display = 'none';
             if (this.dom.bottomJoinBanner) this.dom.bottomJoinBanner.style.display = 'none';
-            if (this.dom.actionButtonsGroup) this.dom.actionButtonsGroup.style.display = 'flex';
-
-            if (this.dom.btnStandUp) {
-                this.dom.btnStandUp.style.display = 'inline-block';
-                this.dom.btnStandUp.textContent = (userPlayer.isFolded && state.phase !== 'WAITING')
-                    ? '참석 대기 취소' : '일어서기(관전)';
-            }
+            if (this.dom.actionButtonsGroup) this.dom.actionButtonsGroup.style.display = 'grid';
+            if (this.dom.btnStandUp) this.dom.btnStandUp.style.display = 'inline-flex';
         } else {
-            // 관전 모드인 경우 -> 참여 대기 버튼을 모든 곳에 눈에 띄게 노출!
             if (this.dom.btnJoinGame) {
                 this.dom.btnJoinGame.style.display = 'inline-flex';
                 this.dom.btnJoinGame.textContent = '⚡ 즉시 참석 대기 (게임 참가)';
@@ -642,11 +857,10 @@ class App {
         this.dom.seatsContainer.innerHTML = '';
         const count = state.maxPlayers;
 
-        // 타원 중심 및 반지름 (6인 전용 쾌적한 비율)
-        const centerX = 50; // 퍼센트
+        const centerX = 50;
         const centerY = 50;
-        const radiusX = 41; // 퍼센트 가로 반지름
-        const radiusY = 32; // 퍼센트 세로 반지름
+        const radiusX = 41;
+        const radiusY = 32;
 
         for (let i = 0; i < count; i++) {
             const player = state.players[i];
@@ -665,7 +879,6 @@ class App {
             seatSpot.style.top = `${posY}%`;
 
             if (!player) {
-                // 빈 자리 -> 착석 버튼
                 seatSpot.innerHTML = `
                     <div class="btn-sit-here" data-seat="${i}">
                         <span>🪑</span>
@@ -676,7 +889,6 @@ class App {
                     this.handleSitUser(i);
                 });
             } else {
-                // 플레이어 박스
                 const isMyTurn = (state.activePlayerIndex === i);
                 const isUserMe = Boolean(userPlayer && player.id === userPlayer.id);
                 const isChoiceMode = (isUserMe && state.phase === 'CHOICE_OPEN');
@@ -704,12 +916,11 @@ class App {
                     </div>
                 `;
 
-                // 3구 초이스 클릭 이벤트 연결
                 if (isChoiceMode) {
                     const cardElements = seatSpot.querySelectorAll('.poker-card');
                     cardElements.forEach((el, cardIndex) => {
                         el.addEventListener('click', () => {
-                            if (window.pokerAudio) window.pokerAudio.playCardFlip();
+                            if (window.soundManager) window.soundManager.playCardFlip();
                             this.currentEngine.handleUserOpenChoice(cardIndex);
                         });
                     });
@@ -730,7 +941,10 @@ class App {
             rotateDeg = (diff * 3.5).toFixed(1);
             translateYPx = (Math.abs(diff) * 2.2).toFixed(1);
         }
-        const styleAttr = `style="transform: rotate(${rotateDeg}deg) translateY(${translateYPx}px); z-index: ${cardIndex + 1};"`;
+
+        // 🔥 모든 카드가 한꺼번에 깜빡이지 않고 순서대로 1장씩 착-착 오픈되도록 스태거 딜레이 부여
+        const animDelay = (cardIndex * 0.14).toFixed(2);
+        const styleAttr = `style="transform: rotate(${rotateDeg}deg) translateY(${translateYPx}px); z-index: ${cardIndex + 1}; animation-delay: ${animDelay}s;"`;
 
         if (!showFace) {
             return `<div class="poker-card hidden-card" data-idx="${cardIndex}" ${styleAttr} title="히든 카드"></div>`;
@@ -758,12 +972,17 @@ class App {
     // 유저 착석 처리
     handleSitUser(seatIndex) {
         if (!this.currentEngine) return;
+        if (!this.user) {
+            this.showModalAlert('착석하여 플레이하려면 로그인이 필요합니다.', '로그인 필요', '🔒');
+            this.dom.loginModal.classList.add('active');
+            return;
+        }
         if (this.getUserPlayer()) {
-            alert('이미 테이블에 참여하고 계십니다.');
+            this.showModalAlert('이미 테이블에 참여하고 계십니다.', '안내', '🪑');
             return;
         }
         if (this.user.money < this.currentEngine.seedMoney) {
-            alert('보유 머니가 부족합니다! 상단에서 1,000만원 무료 충전을 받아주세요.');
+            this.showModalAlert('보유 머니가 부족합니다! 상단에서 1,000만원 무료 충전을 받아주세요.', '잔액 부족', '💰');
             return;
         }
 
@@ -777,7 +996,7 @@ class App {
     // 하단 배팅 컨트롤 패널 업데이트
     updateBettingControls(state, userPlayer) {
         const isMySeat = userPlayer !== null;
-        const isMyTurn = isMySeat && (state.activePlayerIndex === userPlayer.seatIndex) && !userPlayer.isFolded && !userPlayer.isAllIn;
+        const isMyTurn = isMySeat && (state.activePlayerIndex === userPlayer.seatIndex) && !userPlayer.isFolded && !userPlayer.isAllIn && (state.phase === 'STREET_BET');
 
         if (!isMySeat) {
             this.dom.userHandEvalText.textContent = '내 패: 관전 모드';
@@ -786,7 +1005,6 @@ class App {
             return;
         }
 
-        // 유저 족보 계산 및 표시
         if (userPlayer.hand.length > 0) {
             const evalResult = PokerEvaluator.evaluateBestHand(userPlayer.hand);
             this.dom.userHandEvalText.textContent = `내 패: ${evalResult.name}`;
@@ -801,17 +1019,14 @@ class App {
             return;
         }
 
-        // 배팅 계산
         const myBet = userPlayer.currentRoundBet || 0;
         const callNeed = state.currentBet - myBet;
         const pot = state.pot;
         const minBet = state.seedMoney;
 
-        // 버튼 활성화
         this.dom.btnFold.disabled = false;
         this.dom.btnAllIn.disabled = false;
 
-        // 체크 / 콜
         this.dom.btnCheckCall.disabled = false;
         if (callNeed === 0) {
             this.dom.txtCheckCall.textContent = userPlayer.isBoss ? '삥 (체크)' : '체크';
@@ -821,7 +1036,6 @@ class App {
             this.dom.subCheckCall.textContent = `${Math.min(userPlayer.money, callNeed).toLocaleString()}원`;
         }
 
-        // 쿼터 (25%), 하프 (50%), 따당 (2배)
         const quarterAmt = Math.max(minBet, Math.floor(pot * 0.25));
         const halfAmt = Math.max(minBet, Math.floor(pot * 0.5));
         const raiseAmt = callNeed > 0 ? (callNeed * 2) : minBet * 2;
@@ -849,7 +1063,14 @@ class App {
         const userPlayer = this.getUserPlayer();
         if (!userPlayer || !this.currentEngine) return;
 
-        // 🔥 유저 배팅 버튼 클릭 시 전용 보이스 및 사운드 즉시 재생
+        // 🔥 내 턴(차례) 및 배팅 스트리트 상태(STREET_BET) 여부 완벽 검증 -> 내 턴이 아니면 클릭 절대 차단!
+        const state = this.currentEngine;
+        const isMyTurn = (state.activePlayerIndex === userPlayer.seatIndex) && !userPlayer.isFolded && !userPlayer.isAllIn && (state.phase === 'STREET_BET');
+        if (!isMyTurn) {
+            return;
+        }
+
+        // 유저 배팅 버튼 클릭 시 전용 보이스 및 사운드 즉시 재생
         if (window.soundManager) {
             window.soundManager.playBetVoice(action);
         }
@@ -866,6 +1087,18 @@ class App {
         else if (action === 'allin') amount = userPlayer.money;
 
         this.currentEngine.executeAction(userPlayer, action, amount);
+    }
+
+    // 쇼다운 승자 안내 오버레이
+    showWinnerOverlay(info) {
+        this.dom.winnerNameText.textContent = info.winner.name;
+        this.dom.winnerHandText.textContent = `${info.handResult.name} 승리!`;
+        this.dom.winnerPrizeText.textContent = `+${info.prize.toLocaleString()}원 획득`;
+        this.dom.winnerOverlay.style.display = 'block';
+
+        if (window.soundManager && this.user && info.winner.id === this.user.id) {
+            window.soundManager.playWin();
+        }
     }
 }
 
