@@ -1,0 +1,983 @@
+/* css/style.css - 럭셔리 골드 & 벨벳 펠트 카지노 디자인 시스템 */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+
+:root {
+    --bg-dark: #0a0c10;
+    --bg-surface: #12161f;
+    --bg-card: rgba(22, 28, 39, 0.85);
+    --gold-primary: #f5c518;
+    --gold-glow: rgba(245, 197, 24, 0.35);
+    --gold-gradient: linear-gradient(135deg, #ffe082 0%, #f5c518 50%, #c69500 100%);
+    --felt-color: #0d4429;
+    --felt-inner: #0f5132;
+    --felt-border: #2c1a0e;
+    --felt-bevel: #5c381e;
+    --accent-red: #ff4757;
+    --accent-blue: #2ed573;
+    --text-white: #ffffff;
+    --text-dim: #9aa4b2;
+    --border-glass: rgba(255, 255, 255, 0.1);
+    --shadow-premium: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(245, 197, 24, 0.1);
+    --font-main: 'Outfit', 'Noto Sans KR', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(circle at 50% 20%, rgba(20, 35, 55, 0.4) 0%, transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(245, 197, 24, 0.05) 0%, transparent 50%);
+}
+
+/* ==========================================================
+   헤더 & 상단 글로벌 바
+   ========================================================== */
+.global-header {
+    height: 72px;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(14, 18, 25, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-glass);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.brand-logo .logo-icon {
+    font-size: 28px;
+    filter: drop-shadow(0 0 10px rgba(245, 197, 24, 0.6));
+}
+
+.brand-logo h1 {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-logo .badge-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    background: rgba(245, 197, 24, 0.15);
+    color: var(--gold-primary);
+    border: 1px solid rgba(245, 197, 24, 0.3);
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.header-user-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.user-chip-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(245, 197, 24, 0.3);
+    padding: 6px 16px;
+    border-radius: 30px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.user-chip-box .chip-icon {
+    font-size: 20px;
+}
+
+.user-chip-box .chip-amount {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold-primary);
+    letter-spacing: 0.5px;
+}
+
+.btn-refill {
+    background: rgba(245, 197, 24, 0.2);
+    border: 1px solid var(--gold-primary);
+    color: var(--gold-primary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-refill:hover {
+    background: var(--gold-primary);
+    color: #000;
+    box-shadow: 0 0 12px var(--gold-glow);
+}
+
+.btn-sound {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-glass);
+    color: #fff;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.btn-sound:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* ==========================================================
+   로비 뷰 (Lobby View)
+   ========================================================== */
+.view-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 30px 24px 60px;
+}
+
+.lobby-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(20, 30, 48, 0.8) 0%, rgba(36, 59, 85, 0.8) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 32px 40px;
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.lobby-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(245, 197, 24, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.banner-text h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.banner-text p {
+    color: var(--text-dim);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.banner-actions {
+    display: flex;
+    gap: 14px;
+}
+
+.btn-primary {
+    background: var(--gold-gradient);
+    color: #0b0e14;
+    font-weight: 800;
+    font-size: 15px;
+    padding: 12px 28px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(245, 197, 24, 0.35);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(245, 197, 24, 0.5);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.lobby-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.lobby-header-bar h3 {
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.live-indicator {
+    width: 10px;
+    height: 10px;
+    background: #00e676;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 10px #00e676;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.2); }
+}
+
+/* 방 리스트 그리드 */
+.room-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.room-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    border-radius: 18px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.room-card:hover {
+    border-color: rgba(245, 197, 24, 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 197, 24, 0.1);
+}
+
+.room-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.room-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.room-players-badge {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold-primary);
+}
+
+.room-meta-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-dim);
+}
+
+.meta-row .val {
+    color: #fff;
+    font-weight: 600;
+}
+
+.meta-row .val.pot {
+    color: var(--gold-primary);
+    font-weight: 700;
+}
+
+.room-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 14px;
+}
+
+.street-badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    background: rgba(46, 213, 115, 0.15);
+    color: #2ed573;
+    border-radius: 8px;
+    border: 1px solid rgba(46, 213, 115, 0.3);
+}
+
+.btn-enter-room {
+    background: rgba(245, 197, 24, 0.15);
+    border: 1px solid var(--gold-primary);
+    color: var(--gold-primary);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 6px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-enter-room:hover {
+    background: var(--gold-primary);
+    color: #000;
+}
+
+/* ==========================================================
+   게임방 화면 (Table View: 세븐포커 6~9인 타원형 테이블)
+   ========================================================== */
+.table-view-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px 20px 40px;
+    display: none; /* JS 제어로 표시 */
+}
+
+.table-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.table-room-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.table-room-meta h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--gold-primary);
+}
+
+.btn-back-lobby {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-glass);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-back-lobby:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* 카지노 테이블 본체 */
+.poker-table-wrapper {
+    position: relative;
+    width: 100%;
+    height: 680px;
+    background: radial-gradient(ellipse at center, #1b633f 0%, #0d4429 60%, #082d1b 100%);
+    border-radius: 260px;
+    border: 18px solid #3d2314;
+    box-shadow: 
+        inset 0 0 80px rgba(0, 0, 0, 0.8),
+        0 15px 40px rgba(0, 0, 0, 0.8),
+        0 0 0 4px #5c381e,
+        0 0 0 8px rgba(245, 197, 24, 0.2);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+/* 중앙 팟 & 커뮤니티 영역 */
+.table-center-area {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.pot-badge-container {
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(245, 197, 24, 0.4);
+    padding: 10px 24px;
+    border-radius: 30px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pot-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+}
+
+.pot-value {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--gold-primary);
+    text-shadow: 0 0 10px var(--gold-glow);
+}
+
+.street-status-text {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #a3e635;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 3px 12px;
+    border-radius: 12px;
+    display: inline-block;
+}
+
+/* 7구 공용 카드 표시 */
+.community-card-box {
+    margin-top: 10px;
+    display: none;
+}
+
+.community-card-box.show {
+    display: block;
+}
+
+/* 6~9인 좌석 (Seats) 절대 위치 배치 */
+.seat-spot {
+    position: absolute;
+    width: 170px;
+    height: 140px;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    z-index: 20;
+}
+
+/* 빈 자리 버튼 */
+.btn-sit-here {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    color: var(--text-dim);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    gap: 4px;
+}
+
+.btn-sit-here:hover {
+    border-color: var(--gold-primary);
+    color: var(--gold-primary);
+    background: rgba(245, 197, 24, 0.1);
+    transform: scale(1.05);
+}
+
+/* 플레이어 카드 박스 */
+.player-card-box {
+    background: rgba(14, 20, 30, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 8px 12px;
+    width: 155px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+.player-card-box.active-turn {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 25px var(--gold-glow);
+    animation: turnBorder 1.5s infinite;
+}
+
+@keyframes turnBorder {
+    0%, 100% { border-color: var(--gold-primary); }
+    50% { border-color: #ffe082; }
+}
+
+.player-card-box.folded {
+    opacity: 0.45;
+    filter: grayscale(80%);
+}
+
+.player-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.player-name {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 95px;
+}
+
+.player-avatar {
+    font-size: 16px;
+}
+
+.player-chips {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold-primary);
+}
+
+.player-action-bubble {
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 2px 6px;
+    border-radius: 6px;
+    margin-top: 4px;
+    min-height: 18px;
+}
+
+.boss-badge {
+    position: absolute;
+    top: -10px;
+    right: -6px;
+    background: var(--gold-gradient);
+    color: #000;
+    font-size: 10px;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* 카드 핸드 컨테이너 */
+.hand-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+    height: 58px;
+    position: relative;
+    width: 100%;
+}
+
+/* 카드 공통 디자인 */
+.poker-card {
+    width: 38px;
+    height: 54px;
+    background: #ffffff;
+    border-radius: 5px;
+    border: 1px solid #d0d7de;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3px;
+    box-shadow: -2px 3px 6px rgba(0, 0, 0, 0.4);
+    margin-left: -16px; /* 카드 겹치기 효과 */
+    user-select: none;
+    transition: transform 0.2s;
+    position: relative;
+}
+
+.poker-card:first-child {
+    margin-left: 0;
+}
+
+.poker-card.red {
+    color: #d63031;
+}
+
+.poker-card.black {
+    color: #2d3436;
+}
+
+.card-corner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.card-rank {
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.card-suit {
+    font-size: 10px;
+}
+
+.card-center-suit {
+    align-self: center;
+    font-size: 14px;
+}
+
+/* 히든 카드 (카드 뒷면) */
+.poker-card.hidden-card {
+    background: linear-gradient(135deg, #800020 0%, #4a0013 100%);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.6);
+}
+
+.poker-card.hidden-card::after {
+    content: '♠';
+    color: rgba(245, 197, 24, 0.5);
+    font-size: 18px;
+    margin: auto;
+}
+
+/* 3구 초이스 선택 모드 (유저 카드 클릭 유도) */
+.hand-container.choice-mode .poker-card {
+    cursor: pointer;
+    border: 2px solid var(--gold-primary);
+    animation: choiceBounce 1s infinite alternate;
+}
+
+.hand-container.choice-mode .poker-card:hover {
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: 0 8px 15px var(--gold-glow);
+}
+
+@keyframes choiceBounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-4px); }
+}
+
+/* ==========================================================
+   하단 배팅 컨트롤 패널 (Betting Panel)
+   ========================================================== */
+.betting-control-panel {
+    background: rgba(14, 18, 25, 0.95);
+    border: 1px solid var(--border-glass);
+    border-radius: 20px;
+    padding: 16px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-premium);
+}
+
+.user-hand-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.user-hand-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--gold-primary);
+}
+
+.user-hand-sub {
+    font-size: 13px;
+    color: var(--text-dim);
+}
+
+.action-buttons-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-action {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.btn-action .sub-amount {
+    font-size: 10px;
+    color: var(--text-dim);
+}
+
+.btn-action:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-2px);
+}
+
+.btn-action:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.btn-action.fold {
+    background: rgba(255, 71, 87, 0.15);
+    border-color: rgba(255, 71, 87, 0.4);
+    color: #ff6b81;
+}
+
+.btn-action.fold:hover:not(:disabled) {
+    background: #ff4757;
+    color: #fff;
+}
+
+.btn-action.check-call {
+    background: rgba(46, 213, 115, 0.15);
+    border-color: rgba(46, 213, 115, 0.4);
+    color: #2ed573;
+}
+
+.btn-action.check-call:hover:not(:disabled) {
+    background: #2ed573;
+    color: #000;
+}
+
+.btn-action.raise-half {
+    background: rgba(245, 197, 24, 0.15);
+    border-color: rgba(245, 197, 24, 0.4);
+    color: var(--gold-primary);
+}
+
+.btn-action.raise-half:hover:not(:disabled) {
+    background: var(--gold-primary);
+    color: #000;
+}
+
+.btn-action.all-in {
+    background: linear-gradient(135deg, #ff4757 0%, #c0392b 100%);
+    border: none;
+    color: #fff;
+    font-weight: 900;
+}
+
+/* ==========================================================
+   모달 (Modal - 방 만들기 & 족보 가이드)
+   ========================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: #141923;
+    border: 1px solid var(--border-glass);
+    border-radius: 24px;
+    padding: 32px;
+    width: 90%;
+    max-width: 480px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+    transform: scale(0.95);
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modal-header h3 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.btn-modal-close {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+}
+
+.form-control {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-control:focus {
+    border-color: var(--gold-primary);
+}
+
+/* 승자 안내 오버레이 */
+.winner-banner-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(14, 20, 30, 0.95);
+    border: 2px solid var(--gold-primary);
+    border-radius: 24px;
+    padding: 24px 40px;
+    text-align: center;
+    z-index: 100;
+    box-shadow: 0 0 50px rgba(245, 197, 24, 0.4);
+    display: none;
+    animation: popWinner 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popWinner {
+    0% { transform: translate(-50%, -50%) scale(0.6); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.winner-banner-overlay.show {
+    display: block;
+}
+
+.winner-crown {
+    font-size: 40px;
+    margin-bottom: 8px;
+}
+
+.winner-name {
+    font-size: 26px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.winner-hand-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold-primary);
+    margin-bottom: 8px;
+}
+
+.winner-prize {
+    font-size: 22px;
+    font-weight: 900;
+    color: #00e676;
+}
+
+/* 족보 가이드 모달 테이블 */
+.hand-guide-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.hand-guide-table th, .hand-guide-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: left;
+}
+
+.hand-guide-table th {
+    color: var(--gold-primary);
+    font-weight: 700;
+}
