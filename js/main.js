@@ -849,6 +849,11 @@ class App {
         const userPlayer = this.getUserPlayer();
         if (!userPlayer || !this.currentEngine) return;
 
+        // 🔥 유저 배팅 버튼 클릭 시 전용 보이스 및 사운드 즉시 재생
+        if (window.soundManager) {
+            window.soundManager.playBetVoice(action);
+        }
+
         const myBet = userPlayer.currentRoundBet || 0;
         const callNeed = this.currentEngine.currentBet - myBet;
         const pot = this.currentEngine.pot;

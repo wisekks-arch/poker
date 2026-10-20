@@ -198,7 +198,8 @@ class PokerGameEngine {
         }
 
         if (!this.isBackground && window.soundManager) {
-            window.soundManager.playChip();
+            window.soundManager.playChipToss();
+            window.soundManager.playRoundAmbientBgm();
         }
 
         this.phase = 'DEAL_INITIAL';
@@ -426,7 +427,7 @@ class PokerGameEngine {
                 this.pot += actualCall;
                 if (player.money === 0) player.isAllIn = true;
                 player.lastActionText = `콜 (${actualCall.toLocaleString()}원)`;
-                if (!this.isBackground && window.soundManager) window.soundManager.playChip();
+                if (!this.isBackground && player.isBot && window.soundManager) window.soundManager.playChipToss();
                 break;
 
             case 'bet': // 따당 또는 베팅
@@ -450,7 +451,7 @@ class PokerGameEngine {
                 else if (action === 'allin') label = '올인!';
                 player.lastActionText = `${label} (${betAmount.toLocaleString()}원)`;
 
-                if (!this.isBackground && window.soundManager) window.soundManager.playChip();
+                if (!this.isBackground && player.isBot && window.soundManager) window.soundManager.playChipToss();
                 break;
         }
 
