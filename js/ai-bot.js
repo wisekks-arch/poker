@@ -62,7 +62,8 @@ class BotPlayer {
         const myBet = player.currentRoundBet || 0;
         const callAmount = currentBet - myBet;
         const handEval = PokerEvaluator.evaluateBestHand(player.hand);
-        const rankValue = handEval.rankInfo.rank;
+        const rankValue = (handEval.rankInfo && handEval.rankInfo.rank) || 0;
+        const highCardVal = (handEval.highCard && handEval.highCard.rank && handEval.highCard.rank.value) || 0;
 
         // 칩이 콜 금액보다 적으면 올인 또는 다이
         if (player.money <= callAmount) {
@@ -76,7 +77,7 @@ class BotPlayer {
         // 아무도 배팅을 안 한 상태 (callAmount === 0: 선/보스 또는 앞사람 체크)
         if (callAmount === 0) {
             // 패가 좋은 경우 (투페어 이상이거나 높은 원페어)
-            if (rankValue >= 2 || (rankValue === 1 && handEval.highCard.rank.value >= 10)) {
+            if (rankValue >= 2 || (rankValue === 1 && highCardVal >= 10)) {
                 const betTypeRoll = Math.random();
                 if (betTypeRoll < 0.4) {
                     // 하프 배팅
@@ -114,7 +115,7 @@ class BotPlayer {
         }
 
         // 2. 중간 패 (투페어 또는 높은 원페어)
-        if (rankValue === 2 || (rankValue === 1 && handEval.highCard.rank.value >= 11)) {
+        if (rankValue === 2 || (rankValue === 1 && highCardVal >= 11)) {
             // 콜 비용이 판돈 대비 너무 크지 않으면 콜
             if (callAmount <= pot * 0.6 || street <= 5) {
                 return { action: 'call', amount: callAmount };

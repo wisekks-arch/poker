@@ -357,19 +357,19 @@ class PokerEvaluator {
 
         if (countsArray[0].count === 4) {
             const highCard = sorted.find(c => c.rank.value === countsArray[0].value);
-            return { type: 'FOUR_OF_A_KIND', rankInfo: HAND_RANKINGS.FOUR_OF_A_KIND, score: 900000000, name: `${highCard.rank.display} 포카드` };
+            return { type: 'FOUR_OF_A_KIND', rankInfo: HAND_RANKINGS.FOUR_OF_A_KIND, score: 900000000, highCard: highCard, name: `${highCard.rank.display} 포카드` };
         }
         if (countsArray[0].count === 3) {
             const highCard = sorted.find(c => c.rank.value === countsArray[0].value);
-            return { type: 'THREE_OF_A_KIND', rankInfo: HAND_RANKINGS.THREE_OF_A_KIND, score: 300000000, name: `${highCard.rank.display} 트리플` };
+            return { type: 'THREE_OF_A_KIND', rankInfo: HAND_RANKINGS.THREE_OF_A_KIND, score: 300000000, highCard: highCard, name: `${highCard.rank.display} 트리플` };
         }
         if (countsArray[0].count === 2 && countsArray[1] && countsArray[1].count === 2) {
             const highCard = sorted.find(c => c.rank.value === Math.max(countsArray[0].value, countsArray[1].value));
-            return { type: 'TWO_PAIR', rankInfo: HAND_RANKINGS.TWO_PAIR, score: 200000000, name: `${highCard.rank.display} 투페어` };
+            return { type: 'TWO_PAIR', rankInfo: HAND_RANKINGS.TWO_PAIR, score: 200000000, highCard: highCard, name: `${highCard.rank.display} 투페어` };
         }
         if (countsArray[0].count === 2) {
             const highCard = sorted.find(c => c.rank.value === countsArray[0].value);
-            return { type: 'ONE_PAIR', rankInfo: HAND_RANKINGS.ONE_PAIR, score: 100000000, name: `${highCard.rank.display} 원페어` };
+            return { type: 'ONE_PAIR', rankInfo: HAND_RANKINGS.ONE_PAIR, score: 100000000, highCard: highCard, name: `${highCard.rank.display} 원페어` };
         }
 
         const topCard = sorted[0];
@@ -377,6 +377,7 @@ class PokerEvaluator {
             type: 'HIGH_CARD',
             rankInfo: HAND_RANKINGS.HIGH_CARD,
             score: (topCard.rank.value * 10) + topCard.suit.priority,
+            highCard: topCard,
             name: `${topCard.suit.symbol} ${topCard.rank.display} 탑`
         };
     }

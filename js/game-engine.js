@@ -264,7 +264,10 @@ class PokerGameEngine {
 
         // 라운드별 배팅 초기화
         for (const p of this.players) {
-            if (p) p.currentRoundBet = 0;
+            if (p) {
+                p.currentRoundBet = 0;
+                p.hasActed = false;
+            }
         }
 
         // 카드 추가 지급
