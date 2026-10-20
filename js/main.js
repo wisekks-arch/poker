@@ -34,33 +34,52 @@ class App {
                 };
             }
         }
-        return {
-            id: 'user_default',
-            name: '골드포커왕',
-            username: 'vip_player',
-            money: 10000000,
-            role: 'user'
-        };
+        return null; // 비로그인 / 로그아웃 상태
     }
 
     saveUser(user) {
         this.user = user;
-        if (window.authManager) {
+        if (user && window.authManager) {
             window.authManager.updateMoney(user.id, user.money);
         }
         this.updateUserUI();
     }
 
     updateUserUI() {
-        if (this.dom && this.user) {
+        if (!this.dom) return;
+        if (this.user) {
+            // 로그인 상태
             if (this.dom.userMoneyDisplay) {
                 this.dom.userMoneyDisplay.textContent = this.user.money.toLocaleString() + '원';
             }
             if (this.dom.headerUserNickname) {
                 this.dom.headerUserNickname.textContent = this.user.name;
             }
+            if (this.dom.btnOpenProfile) {
+                this.dom.btnOpenProfile.style.display = 'inline-flex';
+            }
+            if (this.dom.btnAuthAction) {
+                this.dom.btnAuthAction.textContent = '로그아웃';
+            }
             if (this.dom.btnOpenAdmin) {
                 this.dom.btnOpenAdmin.style.display = (this.user.role === 'admin') ? 'inline-block' : 'none';
+            }
+        } else {
+            // 비로그인 / 로그아웃 상태
+            if (this.dom.userMoneyDisplay) {
+                this.dom.userMoneyDisplay.textContent = '0원';
+            }
+            if (this.dom.headerUserNickname) {
+                this.dom.headerUserNickname.textContent = '로그인 필요';
+            }
+            if (this.dom.btnOpenProfile) {
+                this.dom.btnOpenProfile.style.display = 'none';
+            }
+            if (this.dom.btnAuthAction) {
+                this.dom.btnAuthAction.textContent = '로그인 / 회원가입';
+            }
+            if (this.dom.btnOpenAdmin) {
+                this.dom.btnOpenAdmin.style.display = 'none';
             }
         }
     }
@@ -166,8 +185,64 @@ class App {
             adminUserTableBody: document.getElementById('adminUserTableBody'),
             adminRoomsListContainer: document.getElementById('adminRoomsListContainer'),
             btnAdminRefreshUsers: document.getElementById('btnAdminRefreshUsers'),
-            btnAdminResetAllRooms: document.getElementById('btnAdminResetAllRooms')
+            btnAdminResetAllRooms: document.getElementById('btnAdminResetAllRooms'),
+
+            // 🔥 커스텀 카지노 알림/확인 다이얼로그 (URL 없는 모달)
+            customAlertModal: document.getElementById('customAlertModal'),
+            customAlertIcon: document.getElementById('customAlertIcon'),
+            customAlertTitle: document.getElementById('customAlertTitle'),
+            customAlertMessage: document.getElementById('customAlertMessage'),
+            btnCustomAlertConfirm: document.getElementById('btnCustomAlertConfirm'),
+            customConfirmModal: document.getElementById('customConfirmModal'),
+            customConfirmTitle: document.getElementById('customConfirmTitle'),
+            customConfirmMessage: document.getElementById('customConfirmMessage'),
+            btnCustomConfirmCancel: document.getElementById('btnCustomConfirmCancel'),
+            btnCustomConfirmOk: document.getElementById('btnCustomConfirmOk')
         };
+
+        if (this.dom.btnCustomAlertConfirm) {
+            this.dom.btnCustomAlertConfirm.addEventListener('click', () => {
+                if (this.dom.customAlertModal) this.dom.customAlertModal.classList.remove('active');
+            });
+        }
+    }
+
+    // 커스텀 알림 모달 (브라우저 도메인 URL 메시지 일체 없음)
+    showModalAlert(message, title = '알 림', icon = '👑') {
+        if (!this.dom || !this.dom.customAlertModal) {
+            return;
+        }
+        if (this.dom.customAlertIcon) this.dom.customAlertIcon.textContent = icon;
+        if (this.dom.customAlertTitle) this.dom.customAlertTitle.textContent = title;
+        if (this.dom.customAlertMessage) this.dom.customAlertMessage.textContent = message;
+        this.dom.customAlertModal.classList.add('active');
+    }
+
+    // 커스텀 확인 모달
+    showModalConfirm(message, onConfirm, title = '확 인') {
+        if (!this.dom || !this.dom.customConfirmModal) {
+            if (onConfirm) onConfirm();
+            return;
+        }
+        if (this.dom.customConfirmTitle) this.dom.customConfirmTitle.textContent = title;
+        if (this.dom.customConfirmMessage) this.dom.customConfirmMessage.textContent = message;
+        this.dom.customConfirmModal.classList.add('active');
+
+        const onOk = () => {
+            this.dom.customConfirmModal.classList.remove('active');
+            cleanup();
+            if (onConfirm) onConfirm();
+        };
+        const onCancel = () => {
+            this.dom.customConfirmModal.classList.remove('active');
+            cleanup();
+        };
+        const cleanup = () => {
+            this.dom.btnCustomConfirmOk.removeEventListener('click', onOk);
+            this.dom.btnCustomConfirmCancel.removeEventListener('click', onCancel);
+        };
+        this.dom.btnCustomConfirmOk.addEventListener('click', onOk);
+        this.dom.btnCustomConfirmCancel.addEventListener('click', onCancel);
     }
 
     bindEvents() {
@@ -178,10 +253,15 @@ class App {
 
         // 1,000만원 무료 리필
         this.dom.btnRefillMoney.addEventListener('click', () => {
+            if (!this.user) {
+                this.showModalAlert('로그인 후 무료 충전 혜택을 이용하실 수 있습니다.', '로그인 필요', '🔒');
+                this.dom.loginModal.classList.add('active');
+                return;
+            }
             this.user.money += 10000000;
             this.saveUser(this.user);
             if (window.soundManager) window.soundManager.playWin();
-            alert('🎉 회원 감사 10,000,000원의 게임머니가 무료 충전되었습니다!');
+            this.showModalAlert('🎉 회원 감사 10,000,000원의 게임머니가 무료 충전되었습니다!', '충전 완료', '💰');
         });
 
         // 사운드 토글
@@ -202,6 +282,11 @@ class App {
 
         // 방 만들기 모달
         this.dom.btnOpenCreateRoom.addEventListener('click', () => {
+            if (!this.user) {
+                this.showModalAlert('게임방 개설은 로그인 후 이용 가능합니다.', '로그인 필요', '🔒');
+                this.dom.loginModal.classList.add('active');
+                return;
+            }
             this.dom.createRoomModal.classList.add('active');
         });
         this.dom.btnCloseCreateRoom.addEventListener('click', () => {
@@ -237,11 +322,16 @@ class App {
         // 🔥 참여 대기 액션 핸들러 (상단, 중앙, 하단 공통)
         const triggerJoinWait = () => {
             if (!this.currentEngine) return;
+            if (!this.user) {
+                this.showModalAlert('게임에 참여하려면 먼저 로그인이 필요합니다.', '로그인 필요', '🔒');
+                this.dom.loginModal.classList.add('active');
+                return;
+            }
             const res = this.currentEngine.reserveUserSeat(this.user);
             if (res.success) {
                 if (window.soundManager) window.soundManager.playChip();
                 this.renderTableState();
-                alert('✅ 참석 대기가 완료되었습니다! 진행 중인 판이 끝나면 다음 판에 즉시 착석되어 카드가 지급됩니다.');
+                this.showModalAlert('✅ 참석 대기가 완료되었습니다!\n진행 중인 판이 끝나면 다음 판에 즉시 착석되어 카드가 지급됩니다.', '참석 대기 접수', '⚡');
             }
         };
 
@@ -302,6 +392,7 @@ class App {
         // 프로필(닉네임/비번) 수정 제출
         this.dom.formUpdateProfile.addEventListener('submit', (e) => {
             e.preventDefault();
+            if (!this.user) return;
             const newNick = this.dom.profNickname.value.trim();
             const newPass = this.dom.profNewPassword.value.trim();
             const res = window.authManager.updateProfile(this.user.id, newNick, newPass);
@@ -309,9 +400,9 @@ class App {
                 this.user = this.loadUser();
                 this.updateUserUI();
                 this.dom.profileModal.classList.remove('active');
-                alert(res.message);
+                this.showModalAlert(res.message, '프로필 수정 완료', '✅');
             } else {
-                alert(res.message);
+                this.showModalAlert(res.message, '수정 실패', '⚠️');
             }
         });
 
@@ -319,10 +410,13 @@ class App {
         this.dom.btnAuthAction.addEventListener('click', () => {
             const current = window.authManager.getCurrentUser();
             if (current) {
-                if (confirm('로그아웃 하시겠습니까?')) {
+                this.showModalConfirm('정말 로그아웃 하시겠습니까?', () => {
                     window.authManager.logout();
-                    location.reload();
-                }
+                    this.user = null;
+                    this.updateUserUI();
+                    this.showModalAlert('성공적으로 로그아웃 되었습니다.', '로그아웃 완료', '👋');
+                    this.dom.loginModal.classList.add('active');
+                }, '로그아웃 확인');
             } else {
                 this.dom.loginModal.classList.add('active');
             }
@@ -352,9 +446,9 @@ class App {
                 this.updateUserUI();
                 this.dom.registerModal.classList.remove('active');
                 if (window.soundManager) window.soundManager.playWin();
-                alert(`🎉 ${res.message}\n환영합니다, [${nick}]님!`);
+                this.showModalAlert(`🎉 ${res.message}\n환영합니다, [${nick}]님! (1,000만 원 지급 완료)`, '회원가입 완료', '👑');
             } else {
-                alert(res.message);
+                this.showModalAlert(res.message, '가입 실패', '⚠️');
             }
         });
 
@@ -374,16 +468,16 @@ class App {
                 this.user = this.loadUser();
                 this.updateUserUI();
                 this.dom.loginModal.classList.remove('active');
-                alert(`반갑습니다, [${res.user.nickname}]님!`);
+                this.showModalAlert(`반갑습니다, [${res.user.nickname}]님!\n즐거운 7포커 게임 되십시오.`, '로그인 성공', '👋');
             } else {
-                alert(res.message);
+                this.showModalAlert(res.message, '로그인 실패', '⚠️');
             }
         });
 
         // 어드민 대시보드 열기
         this.dom.btnOpenAdmin.addEventListener('click', () => {
             if (!window.authManager.isAdmin()) {
-                alert('관리자 권한이 없습니다.');
+                this.showModalAlert('관리자 권한이 없습니다.', '접근 제한', '🚫');
                 return;
             }
             this.renderAdminUsers();
@@ -419,11 +513,11 @@ class App {
 
         // 전체 게임방 강제 리셋
         this.dom.btnAdminResetAllRooms.addEventListener('click', () => {
-            if (confirm('모든 기본 게임방을 초기화하고 재시작하시겠습니까?')) {
+            this.showModalConfirm('모든 기본 게임방을 초기화하고 재시작하시겠습니까?', () => {
                 window.roomManager.initDefaultRooms();
                 this.renderAdminRooms();
-                alert('10개 게임방이 성공적으로 리셋되었습니다.');
-            }
+                this.showModalAlert('10개 게임방이 성공적으로 리셋되었습니다.', '리셋 완료', '🔄');
+            }, '방 초기화 확인');
         });
     }
 
@@ -462,9 +556,14 @@ class App {
                     else if (act === 'sub1000') window.authManager.adminAdjustMoney(id, -10000000);
                     else if (act === 'toggleBlock') window.authManager.adminToggleBlock(id);
                     else if (act === 'delete') {
-                        if (confirm(`회원 [${u.nickname}]을 강제 탈퇴시키겠습니까?`)) {
+                        this.showModalConfirm(`회원 [${u.nickname}]을 정말 강제 탈퇴시키겠습니까?`, () => {
                             window.authManager.adminDeleteUser(id);
-                        }
+                            this.user = this.loadUser();
+                            this.updateUserUI();
+                            this.renderAdminUsers();
+                            this.showModalAlert(`회원 [${u.nickname}]이 탈퇴 처리되었습니다.`, '탈퇴 완료', '🗑️');
+                        }, '강제 탈퇴 확인');
+                        return;
                     }
 
                     this.user = this.loadUser();
@@ -730,7 +829,10 @@ class App {
             rotateDeg = (diff * 3.5).toFixed(1);
             translateYPx = (Math.abs(diff) * 2.2).toFixed(1);
         }
-        const styleAttr = `style="transform: rotate(${rotateDeg}deg) translateY(${translateYPx}px); z-index: ${cardIndex + 1};"`;
+
+        // 🔥 모든 카드가 한꺼번에 깜빡이지 않고 순서대로 1장씩 착-착 오픈되도록 스태거 딜레이 부여
+        const animDelay = (cardIndex * 0.14).toFixed(2);
+        const styleAttr = `style="transform: rotate(${rotateDeg}deg) translateY(${translateYPx}px); z-index: ${cardIndex + 1}; animation-delay: ${animDelay}s;"`;
 
         if (!showFace) {
             return `<div class="poker-card hidden-card" data-idx="${cardIndex}" ${styleAttr} title="히든 카드"></div>`;
@@ -758,12 +860,17 @@ class App {
     // 유저 착석 처리
     handleSitUser(seatIndex) {
         if (!this.currentEngine) return;
+        if (!this.user) {
+            this.showModalAlert('착석하여 플레이하려면 로그인이 필요합니다.', '로그인 필요', '🔒');
+            this.dom.loginModal.classList.add('active');
+            return;
+        }
         if (this.getUserPlayer()) {
-            alert('이미 테이블에 참여하고 계십니다.');
+            this.showModalAlert('이미 테이블에 참여하고 계십니다.', '안내', '🪑');
             return;
         }
         if (this.user.money < this.currentEngine.seedMoney) {
-            alert('보유 머니가 부족합니다! 상단에서 1,000만원 무료 충전을 받아주세요.');
+            this.showModalAlert('보유 머니가 부족합니다! 상단에서 1,000만원 무료 충전을 받아주세요.', '잔액 부족', '💰');
             return;
         }
 
@@ -777,7 +884,7 @@ class App {
     // 하단 배팅 컨트롤 패널 업데이트
     updateBettingControls(state, userPlayer) {
         const isMySeat = userPlayer !== null;
-        const isMyTurn = isMySeat && (state.activePlayerIndex === userPlayer.seatIndex) && !userPlayer.isFolded && !userPlayer.isAllIn;
+        const isMyTurn = isMySeat && (state.activePlayerIndex === userPlayer.seatIndex) && !userPlayer.isFolded && !userPlayer.isAllIn && (state.phase === 'STREET_BET');
 
         if (!isMySeat) {
             this.dom.userHandEvalText.textContent = '내 패: 관전 모드';
@@ -849,7 +956,14 @@ class App {
         const userPlayer = this.getUserPlayer();
         if (!userPlayer || !this.currentEngine) return;
 
-        // 🔥 유저 배팅 버튼 클릭 시 전용 보이스 및 사운드 즉시 재생
+        // 🔥 내 턴(차례) 및 배팅 스트리트 상태(STREET_BET) 여부 완벽 검증 -> 내 턴이 아니면 클릭 절대 차단!
+        const state = this.currentEngine;
+        const isMyTurn = (state.activePlayerIndex === userPlayer.seatIndex) && !userPlayer.isFolded && !userPlayer.isAllIn && (state.phase === 'STREET_BET');
+        if (!isMyTurn) {
+            return;
+        }
+
+        // 유저 배팅 버튼 클릭 시 전용 보이스 및 사운드 즉시 재생
         if (window.soundManager) {
             window.soundManager.playBetVoice(action);
         }
