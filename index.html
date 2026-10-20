@@ -64,8 +64,9 @@
                 <span class="badge-tag" id="tableRoomSeed">시드: 50,000원</span>
                 <span class="badge-tag" id="tableRoomMax">최대 7명</span>
             </div>
-            <div>
-                <button class="btn-secondary" id="btnStandUp" style="padding: 6px 14px; font-size: 13px; display: none;">관전 모드로 전환</button>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button class="btn-primary" id="btnJoinGame" style="padding: 8px 18px; font-size: 14px; box-shadow: 0 0 15px var(--gold-glow);">⚡ 참석 대기 (게임 참가)</button>
+                <button class="btn-secondary" id="btnStandUp" style="padding: 8px 16px; font-size: 13px; display: none;">일어서기(관전)</button>
             </div>
         </div>
 
@@ -155,12 +156,11 @@
                     <input type="text" id="roomNameInput" class="form-control" placeholder="예: 승부사들의 8인방" required maxlength="20">
                 </div>
                 <div class="form-group">
-                    <label for="roomMaxPlayers">참여 인원 (6명 ~ 9명)</label>
+                    <label for="roomMaxPlayers">참여 인원 (최대 6명 제한)</label>
                     <select id="roomMaxPlayers" class="form-control">
-                        <option value="6">6인 스피드 룸 (6-Max)</option>
-                        <option value="7" selected>7인 표준 룸 (7 Players)</option>
-                        <option value="8">8인 타짜 룸 (8 Players)</option>
-                        <option value="9">9인 풀링 룸 (9-Max Full Ring)</option>
+                        <option value="6" selected>6인 표준 룸 (6-Max Standard)</option>
+                        <option value="5">5인 숏핸디드 룸 (5 Players)</option>
+                        <option value="4">4인 스피드 룸 (4 Players)</option>
                     </select>
                 </div>
                 <div class="form-group">

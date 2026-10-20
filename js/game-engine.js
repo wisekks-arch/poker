@@ -84,15 +84,39 @@ class PokerGameEngine {
             money: user.money,
             seatIndex: seatIndex,
             hand: [],
-            isFolded: false,
+            isFolded: (this.phase !== 'WAITING'),
             isAllIn: false,
             currentRoundBet: 0,
             totalBet: 0,
             isBoss: false,
-            lastActionText: ''
+            lastActionText: (this.phase !== 'WAITING') ? '다음 판 참석 대기' : ''
         };
         this.notify();
         return true;
+    }
+
+    // [참석 대기] 버튼 클릭 시 호출: 빈자리 찾거나 봇 1명 교체하여 즉시 예약 착석
+    reserveUserSeat(user) {
+        const existing = this.players.find(p => p && !p.isBot);
+        if (existing) return { success: true, seatIndex: existing.seatIndex, isAlreadySeated: true };
+
+        // 1. 빈자리가 있는지 검색
+        let targetSeat = this.players.findIndex(p => p === null);
+
+        // 2. 빈자리가 없으면 봇 1명 자리 양보 (마지막 봇 자리)
+        if (targetSeat === -1) {
+            for (let i = this.maxPlayers - 1; i >= 0; i--) {
+                if (this.players[i] && this.players[i].isBot) {
+                    targetSeat = i;
+                    break;
+                }
+            }
+        }
+
+        if (targetSeat === -1) targetSeat = 0;
+
+        const ok = this.sitUser(user, targetSeat);
+        return { success: ok, seatIndex: targetSeat, isAlreadySeated: false };
     }
 
     // 유저 퇴장

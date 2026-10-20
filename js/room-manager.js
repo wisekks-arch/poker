@@ -8,26 +8,26 @@ class RoomManager {
         this.initDefaultRooms();
     }
 
-    // 기본 10개 게임방 생성 및 자동 게임 시뮬레이션 시작
+    // 기본 10개 게임방 생성 및 자동 게임 시뮬레이션 시작 (전체 6인 제한)
     initDefaultRooms() {
         const defaultConfigs = [
-            { id: 'room_1', name: '초보자 환영 7인방', maxPlayers: 7, seedMoney: 10000 },
+            { id: 'room_1', name: '초보자 환영 6인방', maxPlayers: 6, seedMoney: 10000 },
             { id: 'room_2', name: '실속파 6인 스피드룸', maxPlayers: 6, seedMoney: 30000 },
-            { id: 'room_3', name: '정통 9인 풀링 챔피언십', maxPlayers: 9, seedMoney: 50000 },
-            { id: 'room_4', name: '타짜들의 격전지 8인방', maxPlayers: 8, seedMoney: 50000 },
-            { id: 'room_5', name: '골드 하이롤러 7인룸', maxPlayers: 7, seedMoney: 100000 },
+            { id: 'room_3', name: '정통 6인 챔피언십', maxPlayers: 6, seedMoney: 50000 },
+            { id: 'room_4', name: '타짜들의 격전지 6인방', maxPlayers: 6, seedMoney: 50000 },
+            { id: 'room_5', name: '골드 하이롤러 6인룸', maxPlayers: 6, seedMoney: 100000 },
             { id: 'room_6', name: 'VIP 로얄 라운지 6인', maxPlayers: 6, seedMoney: 200000 },
-            { id: 'room_7', name: '한방 승부 9인 대격돌', maxPlayers: 9, seedMoney: 100000 },
-            { id: 'room_8', name: '마카오 특설 8인 테이블', maxPlayers: 8, seedMoney: 300000 },
-            { id: 'room_9', name: '라스베가스 프리미엄 7인', maxPlayers: 7, seedMoney: 500000 },
-            { id: 'room_10', name: '천하제일 포커왕 9인', maxPlayers: 9, seedMoney: 500000 }
+            { id: 'room_7', name: '한방 승부 6인 대격돌', maxPlayers: 6, seedMoney: 100000 },
+            { id: 'room_8', name: '마카오 특설 6인 테이블', maxPlayers: 6, seedMoney: 300000 },
+            { id: 'room_9', name: '라스베가스 프리미엄 6인', maxPlayers: 6, seedMoney: 500000 },
+            { id: 'room_10', name: '천하제일 포커왕 6인', maxPlayers: 6, seedMoney: 500000 }
         ];
 
         for (const cfg of defaultConfigs) {
             const engine = new PokerGameEngine({
                 roomId: cfg.id,
                 roomName: cfg.name,
-                maxPlayers: cfg.maxPlayers,
+                maxPlayers: 6,
                 seedMoney: cfg.seedMoney,
                 isBackground: true // 기본은 백그라운드 고속 회전
             });
@@ -37,13 +37,14 @@ class RoomManager {
         }
     }
 
-    // 새 게임방 생성 (유저 개설)
+    // 새 게임방 생성 (유저 개설 - 최대 6인 제한)
     createRoom(name, maxPlayers, seedMoney) {
         const roomId = 'user_room_' + Date.now();
+        const validMax = Math.min(6, Math.max(4, parseInt(maxPlayers) || 6));
         const engine = new PokerGameEngine({
             roomId: roomId,
-            roomName: name || '회원 전용방',
-            maxPlayers: parseInt(maxPlayers) || 7,
+            roomName: name || '회원 전용 6인방',
+            maxPlayers: validMax,
             seedMoney: parseInt(seedMoney) || 50000,
             isBackground: true
         });

@@ -79,6 +79,7 @@ class App {
             tableRoomSeed: document.getElementById('tableRoomSeed'),
             tableRoomMax: document.getElementById('tableRoomMax'),
             btnLeaveRoom: document.getElementById('btnLeaveRoom'),
+            btnJoinGame: document.getElementById('btnJoinGame'),
             btnStandUp: document.getElementById('btnStandUp'),
             seatsContainer: document.getElementById('seatsContainer'),
             tablePotDisplay: document.getElementById('tablePotDisplay'),
@@ -170,6 +171,18 @@ class App {
         this.dom.btnLeaveRoom.addEventListener('click', () => {
             this.leaveTable();
         });
+
+        // [⚡ 즉시 참석 대기 (게임 참가)]
+        if (this.dom.btnJoinGame) {
+            this.dom.btnJoinGame.addEventListener('click', () => {
+                if (!this.currentEngine) return;
+                const res = this.currentEngine.reserveUserSeat(this.user);
+                if (res.success) {
+                    if (window.soundManager) window.soundManager.playChip();
+                    this.renderTableState();
+                }
+            });
+        }
 
         // 관전 모드 / 일어서기
         this.dom.btnStandUp.addEventListener('click', () => {
@@ -316,26 +329,35 @@ class App {
         // 4. 배팅 컨트롤 패널 업데이트
         this.updateBettingControls(state, userPlayer);
 
-        // 5. 유저 머니 실시간 동기화
+        // 5. 유저 머니 및 참석/관전 버튼 상태 동기화
         if (userPlayer) {
             this.user.money = userPlayer.money;
             this.saveUser(this.user);
-            this.dom.btnStandUp.style.display = 'inline-block';
+            if (this.dom.btnJoinGame) this.dom.btnJoinGame.style.display = 'none';
+            if (this.dom.btnStandUp) {
+                this.dom.btnStandUp.style.display = 'inline-block';
+                this.dom.btnStandUp.textContent = (userPlayer.isFolded && state.phase !== 'WAITING')
+                    ? '참석 대기 취소' : '일어서기(관전)';
+            }
         } else {
-            this.dom.btnStandUp.style.display = 'none';
+            if (this.dom.btnJoinGame) {
+                this.dom.btnJoinGame.style.display = 'inline-flex';
+                this.dom.btnJoinGame.textContent = '⚡ 즉시 참석 대기 (게임 참가)';
+            }
+            if (this.dom.btnStandUp) this.dom.btnStandUp.style.display = 'none';
         }
     }
 
-    // 6~9인 타원형 좌표 계산 및 좌석 렌더링
+    // 6인 타원형 좌표 계산 및 좌석 렌더링
     renderSeats(state, userPlayer) {
         this.dom.seatsContainer.innerHTML = '';
         const count = state.maxPlayers;
         
-        // 타원 중심 및 반지름 (픽셀 단위)
+        // 타원 중심 및 반지름 (6인 전용 쾌적한 비율)
         const centerX = 50; // 퍼센트
         const centerY = 50;
-        const radiusX = 40; // 퍼센트 가로 반지름
-        const radiusY = 34; // 퍼센트 세로 반지름
+        const radiusX = 41; // 퍼센트 가로 반지름
+        const radiusY = 32; // 퍼센트 세로 반지름
 
         for (let i = 0; i < count; i++) {
             const player = state.players[i];
