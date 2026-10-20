@@ -28,25 +28,13 @@ class PokerGameEngine {
         this.initSeats();
     }
 
-    setBackground(isBg) {
-        this.isBackground = Boolean(isBg);
-    }
-
-    set onUpdate(fn) {
-        this._onUpdateHandler = fn;
-    }
-
-    get onUpdate() {
-        return this._onUpdateHandler;
+    onUpdate(fn) {
+        this.eventListeners.push(fn);
     }
 
     notify() {
-        const state = this.getState();
         for (const fn of this.eventListeners) {
-            try { fn(state); } catch (e) { }
-        }
-        if (typeof this._onUpdateHandler === 'function') {
-            try { this._onUpdateHandler(state); } catch (e) { }
+            try { fn(this.getState()); } catch (e) { }
         }
     }
 
@@ -86,7 +74,7 @@ class PokerGameEngine {
     // 실제 유저 착석
     sitUser(user, seatIndex) {
         if (seatIndex < 0 || seatIndex >= this.maxPlayers) return false;
-        
+
         this.players[seatIndex] = {
             id: user.id || 'user_me',
             name: user.name || '나(플레이어)',
@@ -170,23 +158,17 @@ class PokerGameEngine {
     runNextRound() {
         if (!this.loopRunning) return;
 
-        // 1. 머니 부족한 봇 재충전
+        // 파산한 봇 재충전
         for (const p of this.players) {
-            if (p && p.isBot && p.money < this.seedMoney * 2) {
+            if (p && p.isBot && p.money < this.seedMoney * 3) {
                 p.money = Math.floor(Math.random() * 4000000) + 6000000;
             }
         }
 
-        // 2. 게임 참여 가능한 인원 확인 및 부족 시 봇 자동 리필
-        let activeSeats = this.players.filter(p => p && p.money >= this.seedMoney);
+        // 참가 가능 인원 확인
+        const activeSeats = this.players.filter(p => p && p.money >= this.seedMoney);
         if (activeSeats.length < 2) {
-            this.fillWithBots();
-            activeSeats = this.players.filter(p => p && p.money >= this.seedMoney);
-        }
-
-        // 3. 2명 이상의 플레이어가 있으면 게임 즉시 진행
-        if (activeSeats.length < 2) {
-            this.turnTimeout = setTimeout(() => this.runNextRound(), 1000);
+            this.turnTimeout = setTimeout(() => this.runNextRound(), 2000);
             return;
         }
 

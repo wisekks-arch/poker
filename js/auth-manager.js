@@ -41,14 +41,12 @@ class AuthManager {
             ];
             this.saveUsers(users);
         }
-    }
 
-    // 🔥 로그아웃 (세션 완전 삭제)
-    logout() {
-        try {
-            localStorage.removeItem(this.SESSION_KEY);
-        } catch (e) { }
-        return true;
+        // 세션이 없으면 기본 회원으로 로그인 세션 생성
+        if (!this.getCurrentUser()) {
+            const defaultUser = users.find(u => u.username === 'vip_player') || users[0];
+            this.setSession(defaultUser);
+        }
     }
 
     getUsers() {
@@ -227,12 +225,20 @@ class AuthManager {
         return { success: true, message: '회원이 삭제되었습니다.' };
     }
 
-    // 🔥 1. 아이디(이메일) 찾기 (닉네임 + 연락처로 검색)
+    // 로그아웃
+    logout() {
+        try {
+            localStorage.removeItem(this.SESSION_KEY);
+        } catch (e) { }
+        return true;
+    }
+
+    // 1. 아이디(이메일) 찾기 (닉네임 + 연락처로 검색)
     findUsername(nickname, phone) {
         const users = this.getUsers();
-        const user = users.find(u => 
-            u.nickname.toLowerCase() === nickname.trim().toLowerCase() &&
-            (phone.trim() === '' || u.phone.replace(/[^0-9]/g, '') === phone.replace(/[^0-9]/g, ''))
+        const user = users.find(u =>
+            u.nickname.toLowerCase() === (nickname || '').trim().toLowerCase() &&
+            (!phone || phone.trim() === '' || u.phone.replace(/[^0-9]/g, '') === phone.replace(/[^0-9]/g, ''))
         );
 
         if (!user) {
@@ -252,10 +258,10 @@ class AuthManager {
         return { success: true, username: user.username, maskedUsername: masked };
     }
 
-    // 🔥 2. 비밀번호 찾기 (아이디/이메일로 임시 비밀번호 발급 및 이메일 발송 시뮬레이션)
+    // 2. 비밀번호 찾기 (아이디/이메일로 임시 비밀번호 발급 및 이메일 발송 시뮬레이션)
     issueTemporaryPassword(username) {
         const users = this.getUsers();
-        const user = users.find(u => u.username.toLowerCase() === username.trim().toLowerCase());
+        const user = users.find(u => u.username.toLowerCase() === (username || '').trim().toLowerCase());
 
         if (!user) {
             return { success: false, message: '등록되지 않은 아이디(이메일)입니다. 확인 후 다시 입력해 주세요.' };
@@ -272,9 +278,9 @@ class AuthManager {
         user.password = tempPassword;
         this.saveUsers(users);
 
-        return { 
-            success: true, 
-            username: user.username, 
+        return {
+            success: true,
+            username: user.username,
             tempPassword: tempPassword,
             message: `등록하신 아이디(이메일) [${user.username}]로 임시 비밀번호가 안전하게 발송되었습니다.`
         };

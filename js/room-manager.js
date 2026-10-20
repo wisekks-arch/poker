@@ -62,7 +62,7 @@ class RoomManager {
         for (const [id, engine] of this.rooms.entries()) {
             const state = engine.getState();
             const activePlayerCount = state.players.filter(p => p !== null).length;
-            
+
             let streetText = '대기 중';
             if (state.street === 3) streetText = '3구(초이스)';
             else if (state.street === 4) streetText = '4구 배팅';
@@ -76,20 +76,13 @@ class RoomManager {
                 name: state.roomName,
                 maxPlayers: state.maxPlayers,
                 currentPlayers: activePlayerCount,
-                playerCount: activePlayerCount,
                 seedMoney: state.seedMoney,
                 pot: state.pot,
-                street: state.street,
                 streetText: streetText,
                 isFull: activePlayerCount >= state.maxPlayers
             });
         }
         return list;
-    }
-
-    // 단일 게임방 엔진 가져오기
-    getRoom(roomId) {
-        return this.rooms.get(roomId) || null;
     }
 
     // 방 입장
