@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로얄 세븐포커 (Royal 7 Poker) - 정통 6인 카지노</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <!-- 글로벌 상단 헤더 -->
     <header class="global-header">
@@ -28,7 +30,8 @@
                 <button class="btn-secondary" id="btnOpenProfile" style="padding: 7px 14px; font-size: 13px;">
                     👤 <span id="headerUserNickname">골드포커왕</span>
                 </button>
-                <button class="btn-primary" id="btnOpenAdmin" style="padding: 7px 14px; font-size: 13px; display: none; background: linear-gradient(135deg, #ff4757 0%, #e84118 100%); color: #fff;">
+                <button class="btn-primary" id="btnOpenAdmin"
+                    style="padding: 7px 14px; font-size: 13px; display: none; background: linear-gradient(135deg, #ff4757 0%, #e84118 100%); color: #fff;">
                     🛡️ 어드민
                 </button>
                 <button class="btn-secondary" id="btnAuthAction" style="padding: 7px 14px; font-size: 13px;">
@@ -46,7 +49,7 @@
             <div class="banner-text">
                 <h2>실시간 정통 7포커 VIP 아레나</h2>
                 <p>회원가입 즉시 <strong>10,000,000원</strong>의 게임머니가 기본 지급됩니다!<br>
-                실시간 6-Max 10개 기본방에서 카드 플레이가 자동 순환 중이며, 마음에 드는 방에 착석하거나 직접 방을 개설할 수 있습니다.</p>
+                    실시간 6-Max 10개 기본방에서 카드 플레이가 자동 순환 중이며, 마음에 드는 방에 착석하거나 직접 방을 개설할 수 있습니다.</p>
             </div>
             <div class="banner-actions">
                 <button class="btn-primary" id="btnOpenCreateRoom">
@@ -79,10 +82,12 @@
                 <span class="badge-tag" id="tableRoomMax">최대 6인 테이블</span>
             </div>
             <div style="display: flex; gap: 10px; align-items: center;">
-                <button class="btn-primary join-neon-pulse" id="btnJoinGame" style="padding: 9px 20px; font-size: 14px;">
+                <button class="btn-primary join-neon-pulse" id="btnJoinGame"
+                    style="padding: 9px 20px; font-size: 14px;">
                     ⚡ 참석 대기 (게임 참가)
                 </button>
-                <button class="btn-secondary" id="btnStandUp" style="padding: 9px 18px; font-size: 13px; display: none;">
+                <button class="btn-secondary" id="btnStandUp"
+                    style="padding: 9px 18px; font-size: 13px; display: none;">
                     일어서기(관전)
                 </button>
             </div>
@@ -106,14 +111,17 @@
 
                 <!-- 🔥 테이블 중앙 참여 대기 전용 대형 버튼 (관전 중일 때 즉각 노출) -->
                 <div id="tableCenterJoinContainer" style="margin-top: 14px; pointer-events: auto;">
-                    <button class="btn-primary join-neon-pulse" id="btnTableCenterJoin" style="padding: 12px 28px; font-size: 15px; border-radius: 30px;">
+                    <button class="btn-primary join-neon-pulse" id="btnTableCenterJoin"
+                        style="padding: 12px 28px; font-size: 15px; border-radius: 30px;">
                         ⚡ 지금 게임 참여하기 (자리 예약)
                     </button>
                 </div>
 
                 <!-- 7구 공용 카드 표시 -->
                 <div class="community-card-box" id="communityCardBox">
-                    <span style="font-size: 11px; color: #ffd700; font-weight: 700; display: block; margin-bottom: 4px;">7구 공용 카드</span>
+                    <span
+                        style="font-size: 11px; color: #ffd700; font-weight: 700; display: block; margin-bottom: 4px;">7구
+                        공용 카드</span>
                     <div id="communityCardSlot"></div>
                 </div>
             </div>
@@ -141,7 +149,8 @@
 
             <!-- 관전 중일 때 나타나는 하단 대형 참가 배너 -->
             <div id="bottomJoinBanner" style="display: none;">
-                <button class="btn-primary join-neon-pulse" id="btnBottomBigJoin" style="padding: 14px 36px; font-size: 16px; border-radius: 16px;">
+                <button class="btn-primary join-neon-pulse" id="btnBottomBigJoin"
+                    style="padding: 14px 36px; font-size: 16px; border-radius: 16px;">
                     ⚡ 다음 판 게임 참가하기 (봇 1명 자동 양보)
                 </button>
             </div>
@@ -186,21 +195,25 @@
             <form id="formRegister">
                 <div class="form-group">
                     <label for="regUsername">아이디 (ID)</label>
-                    <input type="text" id="regUsername" class="form-control" placeholder="아이디를 입력하세요" required minlength="3" maxlength="15">
+                    <input type="text" id="regUsername" class="form-control" placeholder="아이디를 입력하세요" required
+                        minlength="3" maxlength="15">
                 </div>
                 <div class="form-group">
                     <label for="regPassword">비밀번호</label>
-                    <input type="password" id="regPassword" class="form-control" placeholder="비밀번호를 입력하세요" required minlength="4">
+                    <input type="password" id="regPassword" class="form-control" placeholder="비밀번호를 입력하세요" required
+                        minlength="4">
                 </div>
                 <div class="form-group">
                     <label for="regNickname">닉네임 (게임 내 표시명)</label>
-                    <input type="text" id="regNickname" class="form-control" placeholder="사용할 닉네임 (예: 타짜김선생)" required minlength="2" maxlength="10">
+                    <input type="text" id="regNickname" class="form-control" placeholder="사용할 닉네임 (예: 타짜김선생)" required
+                        minlength="2" maxlength="10">
                 </div>
                 <div class="form-group">
                     <label for="regPhone">연락처 / 개인정보</label>
                     <input type="text" id="regPhone" class="form-control" placeholder="예: 010-1234-5678">
                 </div>
-                <div style="background: rgba(245, 197, 24, 0.1); border: 1px solid rgba(245, 197, 24, 0.3); padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 13px; color: var(--gold-bright);">
+                <div
+                    style="background: rgba(245, 197, 24, 0.1); border: 1px solid rgba(245, 197, 24, 0.3); padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 13px; color: var(--gold-bright);">
                     🎁 <strong>가입 즉시 10,000,000원</strong> 게임머니가 충전됩니다!
                 </div>
                 <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
@@ -226,11 +239,14 @@
                     <label for="loginPassword">비밀번호</label>
                     <input type="password" id="loginPassword" class="form-control" placeholder="비밀번호 입력" required>
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 12px;">
+                <button type="submit" class="btn-primary"
+                    style="width: 100%; justify-content: center; margin-bottom: 12px;">
                     로그인
                 </button>
                 <div style="text-align: center;">
-                    <a href="#" id="linkGoRegister" style="color: var(--text-dim); font-size: 13px; text-decoration: underline;">계정이 없으신가요? 회원가입하기</a>
+                    <a href="#" id="linkGoRegister"
+                        style="color: var(--text-dim); font-size: 13px; text-decoration: underline;">계정이 없으신가요?
+                        회원가입하기</a>
                 </div>
             </form>
         </div>
@@ -243,7 +259,8 @@
                 <h3>👤 개인정보 & 프로필 관리</h3>
                 <button class="btn-modal-close" id="btnCloseProfile">✕</button>
             </div>
-            <div style="margin-bottom: 20px; padding: 16px; background: rgba(255, 255, 255, 0.04); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
+            <div
+                style="margin-bottom: 20px; padding: 16px; background: rgba(255, 255, 255, 0.04); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                     <span style="color: var(--text-dim); font-size: 14px;">내 아이디</span>
                     <span id="profUsername" style="font-weight: 700;">-</span>
@@ -283,7 +300,9 @@
             </div>
 
             <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button class="btn-secondary" id="tabAdminUsers" style="flex: 1; background: var(--gold-gradient); color: #000; font-weight: 800;">회원 자산 & 계정 관리</button>
+                <button class="btn-secondary" id="tabAdminUsers"
+                    style="flex: 1; background: var(--gold-gradient); color: #000; font-weight: 800;">회원 자산 & 계정
+                    관리</button>
                 <button class="btn-secondary" id="tabAdminRooms" style="flex: 1;">10개 게임방 모니터링</button>
             </div>
 
@@ -291,7 +310,8 @@
             <div id="adminUsersPanel">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
                     <span style="font-size: 14px; color: var(--text-dim);">전체 등록 회원 목록 및 실시간 게임머니 지급/회수</span>
-                    <button class="btn-secondary" id="btnAdminRefreshUsers" style="padding: 6px 14px; font-size: 12px;">새로고침</button>
+                    <button class="btn-secondary" id="btnAdminRefreshUsers"
+                        style="padding: 6px 14px; font-size: 12px;">새로고침</button>
                 </div>
                 <div style="overflow-x: auto;">
                     <table class="hand-guide-table" style="font-size: 13px;">
@@ -317,7 +337,8 @@
             <div id="adminRoomsPanel" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
                     <span style="font-size: 14px; color: var(--text-dim);">실시간 6-Max 게임방 현황 모니터링</span>
-                    <button class="btn-primary" id="btnAdminResetAllRooms" style="padding: 6px 14px; font-size: 12px; background: #e74c3c;">
+                    <button class="btn-primary" id="btnAdminResetAllRooms"
+                        style="padding: 6px 14px; font-size: 12px; background: #e74c3c;">
                         전체 게임방 강제 리셋
                     </button>
                 </div>
@@ -338,7 +359,8 @@
             <form id="formCreateRoom">
                 <div class="form-group">
                     <label for="roomNameInput">게임방 제목</label>
-                    <input type="text" id="roomNameInput" class="form-control" placeholder="예: 타짜들의 6인방" required maxlength="20">
+                    <input type="text" id="roomNameInput" class="form-control" placeholder="예: 타짜들의 6인방" required
+                        maxlength="20">
                 </div>
                 <div class="form-group">
                     <label for="roomMaxPlayers">참여 인원 (최대 6명 제한)</label>
@@ -358,7 +380,8 @@
                         <option value="500000">500,000원 (VIP 클럽)</option>
                     </select>
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+                <button type="submit" class="btn-primary"
+                    style="width: 100%; justify-content: center; margin-top: 10px;">
                     게임방 생성 및 입장
                 </button>
             </form>
@@ -381,49 +404,73 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>1</td><td>로얄 스트레이트 플러시 (로티플)</td><td>같은 문양의 A, K, Q, J, 10</td></tr>
-                    <tr><td>2</td><td>백 스트레이트 플러시 (백스티플)</td><td>같은 문양의 A, 2, 3, 4, 5</td></tr>
-                    <tr><td>3</td><td>스트레이트 플러시 (스티플)</td><td>같은 문양의 연속된 숫자 5장</td></tr>
-                    <tr><td>4</td><td>포카드 (Four Cards)</td><td>동일한 숫자 4장</td></tr>
-                    <tr><td>5</td><td>풀하우스 (Full House)</td><td>트리플 3장 + 페어 2장</td></tr>
-                    <tr><td>6</td><td>플러시 (Flush)</td><td>숫자에 상관없이 같은 문양 5장</td></tr>
-                    <tr><td>7</td><td>마운틴 (Mountain)</td><td>문양에 상관없이 A, K, Q, J, 10</td></tr>
-                    <tr><td>8</td><td>백스트레이트 (Back Straight)</td><td>문양에 상관없이 A, 2, 3, 4, 5</td></tr>
-                    <tr><td>9</td><td>스트레이트 (Straight)</td><td>문양에 상관없이 연속된 숫자 5장</td></tr>
-                    <tr><td>10</td><td>트리플 (Triple)</td><td>동일한 숫자 3장</td></tr>
-                    <tr><td>11</td><td>투페어 (Two Pair)</td><td>동일한 숫자 2장씩 2쌍</td></tr>
-                    <tr><td>12</td><td>원페어 (One Pair)</td><td>동일한 숫자 2장 1쌍</td></tr>
-                    <tr><td>13</td><td>탑 (High Card)</td><td>아무 족보도 없을 때 가장 높은 카드</td></tr>
+                    <tr>
+                        <td>1</td>
+                        <td>로얄 스트레이트 플러시 (로티플)</td>
+                        <td>같은 문양의 A, K, Q, J, 10</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>백 스트레이트 플러시 (백스티플)</td>
+                        <td>같은 문양의 A, 2, 3, 4, 5</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>스트레이트 플러시 (스티플)</td>
+                        <td>같은 문양의 연속된 숫자 5장</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>포카드 (Four Cards)</td>
+                        <td>동일한 숫자 4장</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>풀하우스 (Full House)</td>
+                        <td>트리플 3장 + 페어 2장</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>플러시 (Flush)</td>
+                        <td>숫자에 상관없이 같은 문양 5장</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>마운틴 (Mountain)</td>
+                        <td>문양에 상관없이 A, K, Q, J, 10</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>백스트레이트 (Back Straight)</td>
+                        <td>문양에 상관없이 A, 2, 3, 4, 5</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>스트레이트 (Straight)</td>
+                        <td>문양에 상관없이 연속된 숫자 5장</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>트리플 (Triple)</td>
+                        <td>동일한 숫자 3장</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>투페어 (Two Pair)</td>
+                        <td>동일한 숫자 2장씩 2쌍</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>원페어 (One Pair)</td>
+                        <td>동일한 숫자 2장 1쌍</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>탑 (High Card)</td>
+                        <td>아무 족보도 없을 때 가장 높은 카드</td>
+                    </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-    <!-- 🔥 럭셔리 카지노 커스텀 알림(Alert) 모달 (브라우저 도메인 URL 메시지 완전 제거) -->
-    <div class="modal-overlay" id="customAlertModal" style="z-index: 9999;">
-        <div class="modal-content custom-dialog-box" style="max-width: 420px; text-align: center;">
-            <div class="custom-dialog-icon" id="customAlertIcon">👑</div>
-            <h3 class="custom-dialog-title" id="customAlertTitle">알 림</h3>
-            <div class="custom-dialog-message" id="customAlertMessage">메시지 내용</div>
-            <button class="btn-primary" id="btnCustomAlertConfirm" style="width: 100%; justify-content: center; margin-top: 24px; padding: 12px;">
-                확 인
-            </button>
-        </div>
-    </div>
-
-    <!-- 🔥 럭셔리 카지노 커스텀 확인(Confirm) 모달 -->
-    <div class="modal-overlay" id="customConfirmModal" style="z-index: 9999;">
-        <div class="modal-content custom-dialog-box" style="max-width: 420px; text-align: center;">
-            <div class="custom-dialog-icon">⚡</div>
-            <h3 class="custom-dialog-title" id="customConfirmTitle">확 인</h3>
-            <div class="custom-dialog-message" id="customConfirmMessage">진행하시겠습니까?</div>
-            <div style="display: flex; gap: 12px; margin-top: 24px;">
-                <button class="btn-secondary" id="btnCustomConfirmCancel" style="flex: 1; justify-content: center; padding: 12px;">
-                    취 소
-                </button>
-                <button class="btn-primary" id="btnCustomConfirmOk" style="flex: 1; justify-content: center; padding: 12px;">
-                    확 인
-                </button>
-            </div>
         </div>
     </div>
 
@@ -436,4 +483,5 @@
     <script src="js/auth-manager.js"></script>
     <script src="js/main.js"></script>
 </body>
+
 </html>

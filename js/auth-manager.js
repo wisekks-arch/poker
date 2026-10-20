@@ -41,12 +41,14 @@ class AuthManager {
             ];
             this.saveUsers(users);
         }
+    }
 
-        // 세션이 없으면 기본 회원으로 로그인 세션 생성
-        if (!this.getCurrentUser()) {
-            const defaultUser = users.find(u => u.username === 'vip_player') || users[0];
-            this.setSession(defaultUser);
-        }
+    // 🔥 로그아웃 (세션 완전 삭제)
+    logout() {
+        try {
+            localStorage.removeItem(this.SESSION_KEY);
+        } catch (e) { }
+        return true;
     }
 
     getUsers() {
