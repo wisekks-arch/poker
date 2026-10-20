@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로얄 세븐포커 (Royal 7 Poker) - 정통 6~9인 카지노</title>
+    <title>로얄 세븐포커 (Royal 7 Poker) - 정통 6인 카지노</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
         <div class="brand-logo" id="btnLogo">
             <span class="logo-icon">♠️</span>
             <h1>ROYAL 7 POKER</h1>
-            <span class="badge-tag">7 Card Stud</span>
+            <span class="badge-tag">6-Max VIP</span>
         </div>
 
         <div class="header-user-info">
@@ -21,7 +21,21 @@
                 <span class="chip-amount" id="userMoneyDisplay">10,000,000원</span>
             </div>
             <button class="btn-refill" id="btnRefillMoney" title="머니 1,000만원 즉시 무료 리필">+1,000만 충전</button>
-            <button class="btn-secondary" id="btnOpenGuide" style="padding: 6px 14px; font-size: 13px;">족보 가이드</button>
+            <button class="btn-secondary" id="btnOpenGuide" style="padding: 7px 14px; font-size: 13px;">족보 가이드</button>
+
+            <!-- 회원 / 개인정보 / 어드민 채널 버튼군 -->
+            <div id="authNavContainer" style="display: flex; gap: 8px; align-items: center;">
+                <button class="btn-secondary" id="btnOpenProfile" style="padding: 7px 14px; font-size: 13px;">
+                    👤 <span id="headerUserNickname">골드포커왕</span>
+                </button>
+                <button class="btn-primary" id="btnOpenAdmin" style="padding: 7px 14px; font-size: 13px; display: none; background: linear-gradient(135deg, #ff4757 0%, #e84118 100%); color: #fff;">
+                    🛡️ 어드민
+                </button>
+                <button class="btn-secondary" id="btnAuthAction" style="padding: 7px 14px; font-size: 13px;">
+                    로그아웃
+                </button>
+            </div>
+
             <button class="btn-sound" id="btnSoundToggle" title="효과음 켜기/끄기">🔊</button>
         </div>
     </header>
@@ -30,9 +44,9 @@
     <main class="view-container" id="lobbyView">
         <div class="lobby-banner">
             <div class="banner-text">
-                <h2>실시간 정통 7포커 아레나</h2>
-                <p>회원가입 즉시 <strong>10,000,000원</strong>의 기본 게임머니가 지급되었습니다!<br>
-                10개 기본방에서 봇들이 실시간으로 플레이 중이며, 마음에 드는 방에 착석하거나 직접 6~9인 방을 개설할 수 있습니다.</p>
+                <h2>실시간 정통 7포커 VIP 아레나</h2>
+                <p>회원가입 즉시 <strong>10,000,000원</strong>의 게임머니가 기본 지급됩니다!<br>
+                실시간 6-Max 10개 기본방에서 카드 플레이가 자동 순환 중이며, 마음에 드는 방에 착석하거나 직접 방을 개설할 수 있습니다.</p>
             </div>
             <div class="banner-actions">
                 <button class="btn-primary" id="btnOpenCreateRoom">
@@ -45,8 +59,8 @@
         </div>
 
         <div class="lobby-header-bar">
-            <h3><span class="live-indicator"></span> 실시간 세븐포커 게임방 (10개 기본방 가동 중)</h3>
-            <span style="font-size: 13px; color: var(--text-dim);">실시간 자동 배팅 진행 중</span>
+            <h3><span class="live-indicator"></span> 실시간 세븐포커 6인 테이블 (10개 기본방 가동 중)</h3>
+            <span style="font-size: 13px; color: var(--text-dim);">6-Max 실시간 자동 배팅 진행 중</span>
         </div>
 
         <!-- 게임방 카드 그리드 -->
@@ -55,18 +69,22 @@
         </div>
     </main>
 
-    <!-- 2. 게임방 화면 (Table View: 세븐포커 6~9인 테이블) -->
+    <!-- 2. 게임방 화면 (Table View: 세븐포커 6인 타원형 마호가니 테이블) -->
     <main class="table-view-container" id="tableView">
         <div class="table-top-bar">
             <div class="table-room-meta">
                 <button class="btn-back-lobby" id="btnLeaveRoom">← 로비로 나가기</button>
-                <h2 id="tableRoomTitle">골드 하이롤러 7인룸</h2>
+                <h2 id="tableRoomTitle">골드 하이롤러 6인룸</h2>
                 <span class="badge-tag" id="tableRoomSeed">시드: 50,000원</span>
-                <span class="badge-tag" id="tableRoomMax">최대 7명</span>
+                <span class="badge-tag" id="tableRoomMax">최대 6인 테이블</span>
             </div>
             <div style="display: flex; gap: 10px; align-items: center;">
-                <button class="btn-primary" id="btnJoinGame" style="padding: 8px 18px; font-size: 14px; box-shadow: 0 0 15px var(--gold-glow);">⚡ 참석 대기 (게임 참가)</button>
-                <button class="btn-secondary" id="btnStandUp" style="padding: 8px 16px; font-size: 13px; display: none;">일어서기(관전)</button>
+                <button class="btn-primary join-neon-pulse" id="btnJoinGame" style="padding: 9px 20px; font-size: 14px;">
+                    ⚡ 참석 대기 (게임 참가)
+                </button>
+                <button class="btn-secondary" id="btnStandUp" style="padding: 9px 18px; font-size: 13px; display: none;">
+                    일어서기(관전)
+                </button>
             </div>
         </div>
 
@@ -86,14 +104,21 @@
                     <span class="street-status-text" id="tableStreetStatus">대기 중</span>
                 </div>
 
-                <!-- 9인 테이블 카드 부족 시 중앙 7구 공용 히든/오픈 카드 -->
+                <!-- 🔥 테이블 중앙 참여 대기 전용 대형 버튼 (관전 중일 때 즉각 노출) -->
+                <div id="tableCenterJoinContainer" style="margin-top: 14px; pointer-events: auto;">
+                    <button class="btn-primary join-neon-pulse" id="btnTableCenterJoin" style="padding: 12px 28px; font-size: 15px; border-radius: 30px;">
+                        ⚡ 지금 게임 참여하기 (자리 예약)
+                    </button>
+                </div>
+
+                <!-- 7구 공용 카드 표시 -->
                 <div class="community-card-box" id="communityCardBox">
                     <span style="font-size: 11px; color: #ffd700; font-weight: 700; display: block; margin-bottom: 4px;">7구 공용 카드</span>
                     <div id="communityCardSlot"></div>
                 </div>
             </div>
 
-            <!-- 6~9인 좌석 시트 (JS로 타원형 배치) -->
+            <!-- 6인 좌석 시트 (JS로 타원형 배치) -->
             <div id="seatsContainer">
                 <!-- JS로 seat-spot 요소 동적 생성 -->
             </div>
@@ -114,6 +139,14 @@
                 <div class="user-hand-sub" id="userSeatNotice">착석 시 다음 판부터 참여할 수 있습니다.</div>
             </div>
 
+            <!-- 관전 중일 때 나타나는 하단 대형 참가 배너 -->
+            <div id="bottomJoinBanner" style="display: none;">
+                <button class="btn-primary join-neon-pulse" id="btnBottomBigJoin" style="padding: 14px 36px; font-size: 16px; border-radius: 16px;">
+                    ⚡ 다음 판 게임 참가하기 (봇 1명 자동 양보)
+                </button>
+            </div>
+
+            <!-- 게임 플레이 중 배팅 버튼군 -->
             <div class="action-buttons-group" id="actionButtonsGroup">
                 <button class="btn-action fold" id="btnFold" disabled>
                     <span>다이</span>
@@ -143,7 +176,159 @@
         </div>
     </main>
 
-    <!-- 모달 1: 새 방 만들기 -->
+    <!-- 모달 1: 회원가입 모달 -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>👑 로얄 세븐포커 회원가입</h3>
+                <button class="btn-modal-close" id="btnCloseRegister">✕</button>
+            </div>
+            <form id="formRegister">
+                <div class="form-group">
+                    <label for="regUsername">아이디 (ID)</label>
+                    <input type="text" id="regUsername" class="form-control" placeholder="아이디를 입력하세요" required minlength="3" maxlength="15">
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">비밀번호</label>
+                    <input type="password" id="regPassword" class="form-control" placeholder="비밀번호를 입력하세요" required minlength="4">
+                </div>
+                <div class="form-group">
+                    <label for="regNickname">닉네임 (게임 내 표시명)</label>
+                    <input type="text" id="regNickname" class="form-control" placeholder="사용할 닉네임 (예: 타짜김선생)" required minlength="2" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="regPhone">연락처 / 개인정보</label>
+                    <input type="text" id="regPhone" class="form-control" placeholder="예: 010-1234-5678">
+                </div>
+                <div style="background: rgba(245, 197, 24, 0.1); border: 1px solid rgba(245, 197, 24, 0.3); padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 13px; color: var(--gold-bright);">
+                    🎁 <strong>가입 즉시 10,000,000원</strong> 게임머니가 충전됩니다!
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                    회원가입 완료 및 1,000만원 받기
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 모달 2: 로그인 모달 -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>로그인</h3>
+                <button class="btn-modal-close" id="btnCloseLogin">✕</button>
+            </div>
+            <form id="formLogin">
+                <div class="form-group">
+                    <label for="loginUsername">아이디</label>
+                    <input type="text" id="loginUsername" class="form-control" placeholder="아이디 입력" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">비밀번호</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="비밀번호 입력" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 12px;">
+                    로그인
+                </button>
+                <div style="text-align: center;">
+                    <a href="#" id="linkGoRegister" style="color: var(--text-dim); font-size: 13px; text-decoration: underline;">계정이 없으신가요? 회원가입하기</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 모달 3: 개인정보 관리 채널 (My Profile) -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>👤 개인정보 & 프로필 관리</h3>
+                <button class="btn-modal-close" id="btnCloseProfile">✕</button>
+            </div>
+            <div style="margin-bottom: 20px; padding: 16px; background: rgba(255, 255, 255, 0.04); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="color: var(--text-dim); font-size: 14px;">내 아이디</span>
+                    <span id="profUsername" style="font-weight: 700;">-</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="color: var(--text-dim); font-size: 14px;">보유 게임머니</span>
+                    <span id="profMoney" style="color: var(--gold-bright); font-weight: 800; font-size: 16px;">-</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-dim); font-size: 14px;">회원 등급</span>
+                    <span id="profRole" style="font-weight: 700; color: #a3e635;">일반 회원</span>
+                </div>
+            </div>
+
+            <form id="formUpdateProfile">
+                <div class="form-group">
+                    <label for="profNickname">닉네임 변경</label>
+                    <input type="text" id="profNickname" class="form-control" required minlength="2" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="profNewPassword">비밀번호 변경 (변경 시에만 입력)</label>
+                    <input type="password" id="profNewPassword" class="form-control" placeholder="4자 이상 입력">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                    개인정보 수정 저장
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 모달 4: 전체 관리자(Admin) 대시보드 채널 -->
+    <div class="modal-overlay" id="adminModal">
+        <div class="modal-content" style="max-width: 850px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3>🛡️ 로얄 세븐포커 전체관리자 어드민</h3>
+                <button class="btn-modal-close" id="btnCloseAdmin">✕</button>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button class="btn-secondary" id="tabAdminUsers" style="flex: 1; background: var(--gold-gradient); color: #000; font-weight: 800;">회원 자산 & 계정 관리</button>
+                <button class="btn-secondary" id="tabAdminRooms" style="flex: 1;">10개 게임방 모니터링</button>
+            </div>
+
+            <!-- 어드민 1: 회원 관리 탭 -->
+            <div id="adminUsersPanel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <span style="font-size: 14px; color: var(--text-dim);">전체 등록 회원 목록 및 실시간 게임머니 지급/회수</span>
+                    <button class="btn-secondary" id="btnAdminRefreshUsers" style="padding: 6px 14px; font-size: 12px;">새로고침</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="hand-guide-table" style="font-size: 13px;">
+                        <thead>
+                            <tr>
+                                <th>아이디</th>
+                                <th>닉네임</th>
+                                <th>보유 머니</th>
+                                <th>권한</th>
+                                <th>상태</th>
+                                <th>자산 관리</th>
+                                <th>제재</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUserTableBody">
+                            <!-- JS 동적 생성 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 어드민 2: 게임방 관리 탭 -->
+            <div id="adminRoomsPanel" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <span style="font-size: 14px; color: var(--text-dim);">실시간 6-Max 게임방 현황 모니터링</span>
+                    <button class="btn-primary" id="btnAdminResetAllRooms" style="padding: 6px 14px; font-size: 12px; background: #e74c3c;">
+                        전체 게임방 강제 리셋
+                    </button>
+                </div>
+                <div id="adminRoomsListContainer">
+                    <!-- JS 동적 생성 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모달 5: 새 방 만들기 -->
     <div class="modal-overlay" id="createRoomModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -153,7 +338,7 @@
             <form id="formCreateRoom">
                 <div class="form-group">
                     <label for="roomNameInput">게임방 제목</label>
-                    <input type="text" id="roomNameInput" class="form-control" placeholder="예: 승부사들의 8인방" required maxlength="20">
+                    <input type="text" id="roomNameInput" class="form-control" placeholder="예: 타짜들의 6인방" required maxlength="20">
                 </div>
                 <div class="form-group">
                     <label for="roomMaxPlayers">참여 인원 (최대 6명 제한)</label>
@@ -180,7 +365,7 @@
         </div>
     </div>
 
-    <!-- 모달 2: 세븐포커 족보 가이드 -->
+    <!-- 모달 6: 세븐포커 족보 가이드 -->
     <div class="modal-overlay" id="guideModal">
         <div class="modal-content" style="max-width: 580px;">
             <div class="modal-header">
@@ -211,11 +396,6 @@
                     <tr><td>13</td><td>탑 (High Card)</td><td>아무 족보도 없을 때 가장 높은 카드</td></tr>
                 </tbody>
             </table>
-            <div style="margin-top: 14px; font-size: 12px; color: var(--text-dim); line-height: 1.5;">
-                * 문양 순서: 스페이드(♠) > 다이아(♦) > 하트(♥) > 클로버(♣)<br>
-                * 3구 초이스: 받은 3장 중 1장을 직접 선택하여 오픈합니다.<br>
-                * 4~6구는 1장씩 오픈 지급, 7구는 히든 카드로 지급됩니다.
-            </div>
         </div>
     </div>
 
@@ -225,6 +405,7 @@
     <script src="js/ai-bot.js"></script>
     <script src="js/game-engine.js"></script>
     <script src="js/room-manager.js"></script>
+    <script src="js/auth-manager.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

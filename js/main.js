@@ -1,15 +1,15 @@
-// js/main.js - 메인 애플리케이션 및 UI 인터랙션 컨트롤러
+// js/main.js - 메인 애플리케이션, 회원/어드민 시스템 및 테이블 참여 컨트롤러
 
 class App {
     constructor() {
         this.currentEngine = null;
         this.lobbyInterval = null;
-        this.tableRenderInterval = null;
 
         this.initDOMElements();
         this.user = this.loadUser();
         this.bindEvents();
-        this.updateUserMoneyDisplay();
+        this.bindAuthEvents();
+        this.updateUserUI();
         this.renderLobby();
 
         // 로비 실시간 갱신 루프 (1.2초마다 방 상태 동기화)
@@ -20,46 +20,65 @@ class App {
         }, 1200);
     }
 
-    // 1,000만원 기본 지급 회원 계정 로드
+    // 유저 로드 (authManager 연동)
     loadUser() {
-        const saved = localStorage.getItem('royal_poker_user');
-        if (saved) {
-            try {
-                return JSON.parse(saved);
-            } catch (e) { }
+        if (window.authManager) {
+            const current = window.authManager.getCurrentUser();
+            if (current) {
+                return {
+                    id: current.id,
+                    name: current.nickname,
+                    username: current.username,
+                    money: current.money,
+                    role: current.role
+                };
+            }
         }
-        // 신규 회원 가입: 기본 머니 1,000만원 즉시 지급
-        const newUser = {
-            id: 'user_' + Date.now(),
+        return {
+            id: 'user_default',
             name: '골드포커왕',
-            money: 10000000, // 10,000,000원
-            createdAt: new Date().toISOString()
+            username: 'vip_player',
+            money: 10000000,
+            role: 'user'
         };
-        this.saveUser(newUser);
-        return newUser;
     }
 
     saveUser(user) {
         this.user = user;
-        localStorage.setItem('royal_poker_user', JSON.stringify(this.user));
-        this.updateUserMoneyDisplay();
+        if (window.authManager) {
+            window.authManager.updateMoney(user.id, user.money);
+        }
+        this.updateUserUI();
     }
 
-    updateUserMoneyDisplay() {
-        if (this.dom && this.dom.userMoneyDisplay && this.user) {
-            this.dom.userMoneyDisplay.textContent = this.user.money.toLocaleString() + '원';
+    updateUserUI() {
+        if (this.dom && this.user) {
+            if (this.dom.userMoneyDisplay) {
+                this.dom.userMoneyDisplay.textContent = this.user.money.toLocaleString() + '원';
+            }
+            if (this.dom.headerUserNickname) {
+                this.dom.headerUserNickname.textContent = this.user.name;
+            }
+            if (this.dom.btnOpenAdmin) {
+                this.dom.btnOpenAdmin.style.display = (this.user.role === 'admin') ? 'inline-block' : 'none';
+            }
         }
     }
 
     initDOMElements() {
         this.dom = {
+            // 헤더 & 유저
             userMoneyDisplay: document.getElementById('userMoneyDisplay'),
+            headerUserNickname: document.getElementById('headerUserNickname'),
             btnRefillMoney: document.getElementById('btnRefillMoney'),
             btnSoundToggle: document.getElementById('btnSoundToggle'),
             btnLogo: document.getElementById('btnLogo'),
             btnOpenGuide: document.getElementById('btnOpenGuide'),
             btnCloseGuide: document.getElementById('btnCloseGuide'),
             guideModal: document.getElementById('guideModal'),
+            btnOpenProfile: document.getElementById('btnOpenProfile'),
+            btnOpenAdmin: document.getElementById('btnOpenAdmin'),
+            btnAuthAction: document.getElementById('btnAuthAction'),
 
             // 로비
             lobbyView: document.getElementById('lobbyView'),
@@ -91,9 +110,16 @@ class App {
             winnerHandText: document.getElementById('winnerHandText'),
             winnerPrizeText: document.getElementById('winnerPrizeText'),
 
+            // 🔥 참여 대기 전용 버튼 (중앙 & 하단)
+            tableCenterJoinContainer: document.getElementById('tableCenterJoinContainer'),
+            btnTableCenterJoin: document.getElementById('btnTableCenterJoin'),
+            bottomJoinBanner: document.getElementById('bottomJoinBanner'),
+            btnBottomBigJoin: document.getElementById('btnBottomBigJoin'),
+
             // 배팅 패널
             userHandEvalText: document.getElementById('userHandEvalText'),
             userSeatNotice: document.getElementById('userSeatNotice'),
+            actionButtonsGroup: document.getElementById('actionButtonsGroup'),
             btnFold: document.getElementById('btnFold'),
             btnCheckCall: document.getElementById('btnCheckCall'),
             txtCheckCall: document.getElementById('txtCheckCall'),
@@ -104,7 +130,43 @@ class App {
             subHalf: document.getElementById('subHalf'),
             btnRaise: document.getElementById('btnRaise'),
             subRaise: document.getElementById('subRaise'),
-            btnAllIn: document.getElementById('btnAllIn')
+            btnAllIn: document.getElementById('btnAllIn'),
+
+            // 모달들 (회원가입, 로그인, 프로필, 어드민)
+            registerModal: document.getElementById('registerModal'),
+            btnCloseRegister: document.getElementById('btnCloseRegister'),
+            formRegister: document.getElementById('formRegister'),
+            regUsername: document.getElementById('regUsername'),
+            regPassword: document.getElementById('regPassword'),
+            regNickname: document.getElementById('regNickname'),
+            regPhone: document.getElementById('regPhone'),
+
+            loginModal: document.getElementById('loginModal'),
+            btnCloseLogin: document.getElementById('btnCloseLogin'),
+            formLogin: document.getElementById('formLogin'),
+            loginUsername: document.getElementById('loginUsername'),
+            loginPassword: document.getElementById('loginPassword'),
+            linkGoRegister: document.getElementById('linkGoRegister'),
+
+            profileModal: document.getElementById('profileModal'),
+            btnCloseProfile: document.getElementById('btnCloseProfile'),
+            profUsername: document.getElementById('profUsername'),
+            profMoney: document.getElementById('profMoney'),
+            profRole: document.getElementById('profRole'),
+            profNickname: document.getElementById('profNickname'),
+            profNewPassword: document.getElementById('profNewPassword'),
+            formUpdateProfile: document.getElementById('formUpdateProfile'),
+
+            adminModal: document.getElementById('adminModal'),
+            btnCloseAdmin: document.getElementById('btnCloseAdmin'),
+            tabAdminUsers: document.getElementById('tabAdminUsers'),
+            tabAdminRooms: document.getElementById('tabAdminRooms'),
+            adminUsersPanel: document.getElementById('adminUsersPanel'),
+            adminRoomsPanel: document.getElementById('adminRoomsPanel'),
+            adminUserTableBody: document.getElementById('adminUserTableBody'),
+            adminRoomsListContainer: document.getElementById('adminRoomsListContainer'),
+            btnAdminRefreshUsers: document.getElementById('btnAdminRefreshUsers'),
+            btnAdminResetAllRooms: document.getElementById('btnAdminResetAllRooms')
         };
     }
 
@@ -146,7 +208,7 @@ class App {
             this.dom.createRoomModal.classList.remove('active');
         });
 
-        // 방 만들기 제출
+        // 방 만들기 제출 (최대 6인)
         this.dom.formCreateRoom.addEventListener('submit', (e) => {
             e.preventDefault();
             const name = this.dom.roomNameInput.value.trim();
@@ -172,17 +234,20 @@ class App {
             this.leaveTable();
         });
 
-        // [⚡ 즉시 참석 대기 (게임 참가)]
-        if (this.dom.btnJoinGame) {
-            this.dom.btnJoinGame.addEventListener('click', () => {
-                if (!this.currentEngine) return;
-                const res = this.currentEngine.reserveUserSeat(this.user);
-                if (res.success) {
-                    if (window.soundManager) window.soundManager.playChip();
-                    this.renderTableState();
-                }
-            });
-        }
+        // 🔥 참여 대기 액션 핸들러 (상단, 중앙, 하단 공통)
+        const triggerJoinWait = () => {
+            if (!this.currentEngine) return;
+            const res = this.currentEngine.reserveUserSeat(this.user);
+            if (res.success) {
+                if (window.soundManager) window.soundManager.playChip();
+                this.renderTableState();
+                alert('✅ 참석 대기가 완료되었습니다! 진행 중인 판이 끝나면 다음 판에 즉시 착석되어 카드가 지급됩니다.');
+            }
+        };
+
+        if (this.dom.btnJoinGame) this.dom.btnJoinGame.addEventListener('click', triggerJoinWait);
+        if (this.dom.btnTableCenterJoin) this.dom.btnTableCenterJoin.addEventListener('click', triggerJoinWait);
+        if (this.dom.btnBottomBigJoin) this.dom.btnBottomBigJoin.addEventListener('click', triggerJoinWait);
 
         // 관전 모드 / 일어서기
         this.dom.btnStandUp.addEventListener('click', () => {
@@ -190,7 +255,7 @@ class App {
             const seatIdx = this.currentEngine.players.findIndex(p => p && !p.isBot);
             if (seatIdx >= 0) {
                 this.currentEngine.standUser(seatIdx);
-                this.dom.btnStandUp.style.display = 'none';
+                this.renderTableState();
             }
         });
 
@@ -210,6 +275,229 @@ class App {
         this.dom.btnHalf.addEventListener('click', () => this.handleBetAction('half'));
         this.dom.btnRaise.addEventListener('click', () => this.handleBetAction('raise'));
         this.dom.btnAllIn.addEventListener('click', () => this.handleBetAction('allin'));
+    }
+
+    // ==========================================================
+    // 회원가입, 로그인, 개인정보관리 & 어드민 이벤트 바인딩
+    // ==========================================================
+    bindAuthEvents() {
+        // 프로필 열기
+        this.dom.btnOpenProfile.addEventListener('click', () => {
+            const current = window.authManager.getCurrentUser();
+            if (current) {
+                this.dom.profUsername.textContent = current.username;
+                this.dom.profMoney.textContent = current.money.toLocaleString() + '원';
+                this.dom.profRole.textContent = current.role === 'admin' ? '🛡️ 총괄 관리자' : '👑 VIP 정회원';
+                this.dom.profNickname.value = current.nickname;
+                this.dom.profNewPassword.value = '';
+                this.dom.profileModal.classList.add('active');
+            } else {
+                this.dom.loginModal.classList.add('active');
+            }
+        });
+        this.dom.btnCloseProfile.addEventListener('click', () => {
+            this.dom.profileModal.classList.remove('active');
+        });
+
+        // 프로필(닉네임/비번) 수정 제출
+        this.dom.formUpdateProfile.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newNick = this.dom.profNickname.value.trim();
+            const newPass = this.dom.profNewPassword.value.trim();
+            const res = window.authManager.updateProfile(this.user.id, newNick, newPass);
+            if (res.success) {
+                this.user = this.loadUser();
+                this.updateUserUI();
+                this.dom.profileModal.classList.remove('active');
+                alert(res.message);
+            } else {
+                alert(res.message);
+            }
+        });
+
+        // 로그인 / 로그아웃 버튼
+        this.dom.btnAuthAction.addEventListener('click', () => {
+            const current = window.authManager.getCurrentUser();
+            if (current) {
+                if (confirm('로그아웃 하시겠습니까?')) {
+                    window.authManager.logout();
+                    location.reload();
+                }
+            } else {
+                this.dom.loginModal.classList.add('active');
+            }
+        });
+
+        // 회원가입 모달 닫기 / 열기
+        this.dom.btnCloseRegister.addEventListener('click', () => {
+            this.dom.registerModal.classList.remove('active');
+        });
+        this.dom.linkGoRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.dom.loginModal.classList.remove('active');
+            this.dom.registerModal.classList.add('active');
+        });
+
+        // 회원가입 폼 제출
+        this.dom.formRegister.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const u = this.dom.regUsername.value.trim();
+            const p = this.dom.regPassword.value;
+            const nick = this.dom.regNickname.value.trim();
+            const phone = this.dom.regPhone.value.trim();
+
+            const res = window.authManager.register(u, p, nick, phone);
+            if (res.success) {
+                this.user = this.loadUser();
+                this.updateUserUI();
+                this.dom.registerModal.classList.remove('active');
+                if (window.soundManager) window.soundManager.playWin();
+                alert(`🎉 ${res.message}\n환영합니다, [${nick}]님!`);
+            } else {
+                alert(res.message);
+            }
+        });
+
+        // 로그인 모달 닫기
+        this.dom.btnCloseLogin.addEventListener('click', () => {
+            this.dom.loginModal.classList.remove('active');
+        });
+
+        // 로그인 폼 제출
+        this.dom.formLogin.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const u = this.dom.loginUsername.value.trim();
+            const p = this.dom.loginPassword.value;
+
+            const res = window.authManager.login(u, p);
+            if (res.success) {
+                this.user = this.loadUser();
+                this.updateUserUI();
+                this.dom.loginModal.classList.remove('active');
+                alert(`반갑습니다, [${res.user.nickname}]님!`);
+            } else {
+                alert(res.message);
+            }
+        });
+
+        // 어드민 대시보드 열기
+        this.dom.btnOpenAdmin.addEventListener('click', () => {
+            if (!window.authManager.isAdmin()) {
+                alert('관리자 권한이 없습니다.');
+                return;
+            }
+            this.renderAdminUsers();
+            this.dom.adminModal.classList.add('active');
+        });
+        this.dom.btnCloseAdmin.addEventListener('click', () => {
+            this.dom.adminModal.classList.remove('active');
+        });
+
+        // 어드민 탭 전환
+        this.dom.tabAdminUsers.addEventListener('click', () => {
+            this.dom.adminUsersPanel.style.display = 'block';
+            this.dom.adminRoomsPanel.style.display = 'none';
+            this.dom.tabAdminUsers.style.background = 'var(--gold-gradient)';
+            this.dom.tabAdminUsers.style.color = '#000';
+            this.dom.tabAdminRooms.style.background = 'rgba(255,255,255,0.08)';
+            this.dom.tabAdminRooms.style.color = '#fff';
+            this.renderAdminUsers();
+        });
+        this.dom.tabAdminRooms.addEventListener('click', () => {
+            this.dom.adminUsersPanel.style.display = 'none';
+            this.dom.adminRoomsPanel.style.display = 'block';
+            this.dom.tabAdminRooms.style.background = 'var(--gold-gradient)';
+            this.dom.tabAdminRooms.style.color = '#000';
+            this.dom.tabAdminUsers.style.background = 'rgba(255,255,255,0.08)';
+            this.dom.tabAdminUsers.style.color = '#fff';
+            this.renderAdminRooms();
+        });
+
+        this.dom.btnAdminRefreshUsers.addEventListener('click', () => {
+            this.renderAdminUsers();
+        });
+
+        // 전체 게임방 강제 리셋
+        this.dom.btnAdminResetAllRooms.addEventListener('click', () => {
+            if (confirm('모든 기본 게임방을 초기화하고 재시작하시겠습니까?')) {
+                window.roomManager.initDefaultRooms();
+                this.renderAdminRooms();
+                alert('10개 게임방이 성공적으로 리셋되었습니다.');
+            }
+        });
+    }
+
+    // 어드민: 회원 관리 렌더링
+    renderAdminUsers() {
+        const users = window.authManager.getUsers();
+        this.dom.adminUserTableBody.innerHTML = '';
+
+        users.forEach(u => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${u.username}</strong></td>
+                <td>${u.nickname}</td>
+                <td style="color: var(--gold-bright); font-weight: 800;">${u.money.toLocaleString()}원</td>
+                <td><span class="${u.role === 'admin' ? 'badge-admin' : 'badge-user'}">${u.role}</span></td>
+                <td><span style="color: ${u.isBlocked ? '#ff4757' : '#2ed573'}; font-weight: 700;">${u.isBlocked ? '이용정지' : '정상'}</span></td>
+                <td>
+                    <button class="btn-admin-action btn-admin-add" data-id="${u.id}" data-act="add1000">+1천만</button>
+                    <button class="btn-admin-action btn-admin-add" data-id="${u.id}" data-act="add1억">+1억</button>
+                    <button class="btn-admin-action btn-admin-sub" data-id="${u.id}" data-act="sub1000">-1천만</button>
+                </td>
+                <td>
+                    <button class="btn-admin-action btn-admin-block" data-id="${u.id}" data-act="toggleBlock">${u.isBlocked ? '해제' : '차단'}</button>
+                    <button class="btn-admin-action" style="background: #576574; color:#fff;" data-id="${u.id}" data-act="delete">탈퇴</button>
+                </td>
+            `;
+
+            // 머니 조정 및 제재 이벤트
+            tr.querySelectorAll('.btn-admin-action').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    const act = btn.getAttribute('data-act');
+
+                    if (act === 'add1000') window.authManager.adminAdjustMoney(id, 10000000);
+                    else if (act === 'add1억') window.authManager.adminAdjustMoney(id, 100000000);
+                    else if (act === 'sub1000') window.authManager.adminAdjustMoney(id, -10000000);
+                    else if (act === 'toggleBlock') window.authManager.adminToggleBlock(id);
+                    else if (act === 'delete') {
+                        if (confirm(`회원 [${u.nickname}]을 강제 탈퇴시키겠습니까?`)) {
+                            window.authManager.adminDeleteUser(id);
+                        }
+                    }
+
+                    this.user = this.loadUser();
+                    this.updateUserUI();
+                    this.renderAdminUsers();
+                });
+            });
+
+            this.dom.adminUserTableBody.appendChild(tr);
+        });
+    }
+
+    // 어드민: 게임방 모니터링 렌더링
+    renderAdminRooms() {
+        const rooms = window.roomManager.getRoomList();
+        this.dom.adminRoomsListContainer.innerHTML = '';
+
+        rooms.forEach(r => {
+            const div = document.createElement('div');
+            div.style.cssText = 'background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 18px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;';
+            div.innerHTML = `
+                <div>
+                    <strong>${r.name}</strong> (${r.currentPlayers}/${r.maxPlayers}명)
+                    <div style="font-size: 12px; color: var(--text-dim); margin-top: 2px;">
+                        시드머니: ${r.seedMoney.toLocaleString()}원 | 상태: ${r.streetText}
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <span style="color: var(--gold-bright); font-weight: 800; font-size: 15px;">POT: ${r.pot.toLocaleString()}원</span>
+                </div>
+            `;
+            this.dom.adminRoomsListContainer.appendChild(div);
+        });
     }
 
     // ==========================================================
@@ -285,7 +573,7 @@ class App {
         return this.currentEngine.players.find(p => p && !p.isBot);
     }
 
-    // 세븐포커 6~9인 테이블 렌더링
+    // 세븐포커 6인 테이블 렌더링
     renderTableState() {
         if (!this.currentEngine) return;
         const state = this.currentEngine.getState();
@@ -303,15 +591,6 @@ class App {
         else if (state.street === 8) streetDesc = '쇼다운! 승자 판정';
         this.dom.tableStreetStatus.textContent = streetDesc;
 
-        // 7구 공용 카드 표시 (9인 테이블 등 카드 부족 시)
-        if (state.communityCard) {
-            this.dom.communityCardBox.classList.add('show');
-            this.dom.communityCardSlot.innerHTML = this.createCardHTML(state.communityCard, false);
-        } else {
-            this.dom.communityCardBox.classList.remove('show');
-            this.dom.communityCardSlot.innerHTML = '';
-        }
-
         // 2. 쇼다운 승자 배너
         if (state.winnerInfo && state.street === 8) {
             const w = state.winnerInfo.winners[0];
@@ -323,27 +602,37 @@ class App {
             this.dom.winnerBanner.classList.remove('show');
         }
 
-        // 3. 6~9인 좌석 타원형 배치 렌더링
+        // 3. 6인 좌석 타원형 배치 렌더링
         this.renderSeats(state, userPlayer);
 
-        // 4. 배팅 컨트롤 패널 업데이트
+        // 4. 배팅 컨트롤 패널 & 참여 대기 버튼 가시성 업데이트
         this.updateBettingControls(state, userPlayer);
 
         // 5. 유저 머니 및 참석/관전 버튼 상태 동기화
         if (userPlayer) {
             this.user.money = userPlayer.money;
             this.saveUser(this.user);
+
+            // 이미 앉아있는 경우
             if (this.dom.btnJoinGame) this.dom.btnJoinGame.style.display = 'none';
+            if (this.dom.tableCenterJoinContainer) this.dom.tableCenterJoinContainer.style.display = 'none';
+            if (this.dom.bottomJoinBanner) this.dom.bottomJoinBanner.style.display = 'none';
+            if (this.dom.actionButtonsGroup) this.dom.actionButtonsGroup.style.display = 'flex';
+
             if (this.dom.btnStandUp) {
                 this.dom.btnStandUp.style.display = 'inline-block';
                 this.dom.btnStandUp.textContent = (userPlayer.isFolded && state.phase !== 'WAITING')
                     ? '참석 대기 취소' : '일어서기(관전)';
             }
         } else {
+            // 관전 모드인 경우 -> 참여 대기 버튼을 모든 곳에 눈에 띄게 노출!
             if (this.dom.btnJoinGame) {
                 this.dom.btnJoinGame.style.display = 'inline-flex';
                 this.dom.btnJoinGame.textContent = '⚡ 즉시 참석 대기 (게임 참가)';
             }
+            if (this.dom.tableCenterJoinContainer) this.dom.tableCenterJoinContainer.style.display = 'block';
+            if (this.dom.bottomJoinBanner) this.dom.bottomJoinBanner.style.display = 'block';
+            if (this.dom.actionButtonsGroup) this.dom.actionButtonsGroup.style.display = 'none';
             if (this.dom.btnStandUp) this.dom.btnStandUp.style.display = 'none';
         }
     }
@@ -361,7 +650,6 @@ class App {
 
         for (let i = 0; i < count; i++) {
             const player = state.players[i];
-            // 유저가 착석해 있다면 유저를 항상 화면 하단 정중앙(angle = 90도)에 오도록 회전 오프셋 적용
             let offset = 0;
             if (userPlayer) {
                 offset = (Math.PI / 2) - ((2 * Math.PI / count) * userPlayer.seatIndex);
@@ -396,7 +684,6 @@ class App {
 
                 let cardHTML = '';
                 player.hand.forEach((card, cIdx) => {
-                    // 실제 유저 본인의 카드는 히든이어도 볼 수 있음 (세븐포커 본인 히든 확인 가능)
                     const showFace = !card.isHidden || isUserMe || (state.phase === 'SHOWDOWN' && !player.isFolded);
                     cardHTML += this.createCardHTML(card, showFace, isChoiceMode, cIdx);
                 });
@@ -478,7 +765,7 @@ class App {
 
         if (!isMySeat) {
             this.dom.userHandEvalText.textContent = '내 패: 관전 모드';
-            this.dom.userSeatNotice.textContent = '빈 자리에 [착석하기]를 누르면 게임에 참여할 수 있습니다.';
+            this.dom.userSeatNotice.textContent = '👉 [참석 대기]를 누르면 다음 판부터 즉시 참여할 수 있습니다.';
             this.disableAllBetButtons();
             return;
         }
@@ -489,8 +776,8 @@ class App {
             this.dom.userHandEvalText.textContent = `내 패: ${evalResult.name}`;
             this.dom.userSeatNotice.textContent = isMyTurn ? '👉 당신의 턴입니다! 배팅을 선택하세요.' : '상대방의 배팅을 기다리는 중...';
         } else {
-            this.dom.userHandEvalText.textContent = '내 패: 다음 판 대기 중';
-            this.dom.userSeatNotice.textContent = '다음 라운드가 시작되면 자동으로 카드가 지급됩니다.';
+            this.dom.userHandEvalText.textContent = '내 패: 다음 판 참석 대기중';
+            this.dom.userSeatNotice.textContent = '다음 판이 시작되면 3장의 카드가 자동으로 지급됩니다.';
         }
 
         if (!isMyTurn) {
