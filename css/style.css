@@ -1,37 +1,38 @@
-/* css/style.css - 라스베가스 VIP 하이롤러 500% 그래픽 혁신 디자인 시스템 */
+/* css/style.css - 라스베가스 VIP 하이롤러 1000% 초고화질 그래픽 & 3D 카드 플립 시스템 */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Cinzel:wght@600;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Cinzel:wght@600;700;800;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
 
 :root {
-    --bg-dark: #07090e;
-    --bg-surface: #0f131c;
-    --bg-card: rgba(18, 24, 36, 0.9);
+    --bg-dark: #05070a;
+    --bg-surface: #0a0e17;
+    --bg-card: rgba(16, 22, 34, 0.92);
     
-    /* 골드 럭셔리 팔레트 */
-    --gold-bright: #ffeaa7;
+    /* 울트라 골드 포일 팔레트 */
+    --gold-bright: #fff3b0;
     --gold-primary: #f5c518;
-    --gold-deep: #c69500;
+    --gold-deep: #d49a00;
     --gold-dark: #7a5c00;
-    --gold-glow: rgba(245, 197, 24, 0.45);
-    --gold-gradient: linear-gradient(135deg, #fff3b0 0%, #f5c518 45%, #d49a00 80%, #996e00 100%);
-    --gold-border: linear-gradient(135deg, rgba(255, 234, 167, 0.6) 0%, rgba(245, 197, 24, 0.2) 100%);
+    --gold-glow: rgba(245, 197, 24, 0.55);
+    --gold-gradient: linear-gradient(135deg, #fff7c2 0%, #f5c518 40%, #c69500 80%, #8a6500 100%);
+    --gold-border: linear-gradient(135deg, rgba(255, 243, 176, 0.7) 0%, rgba(245, 197, 24, 0.25) 100%);
 
-    /* 카지노 펠트 & 마호가니 */
-    --felt-center: #157347;
-    --felt-mid: #0d4b2e;
-    --felt-dark: #072a19;
-    --felt-edge: #03140c;
+    /* 마호가니 & 카지노 벨벳 펠트 */
+    --felt-center: #1a834f;
+    --felt-mid: #105c36;
+    --felt-dark: #093720;
+    --felt-edge: #04190e;
     
-    --wood-rim: #24140b;
-    --wood-bevel: #5c341b;
-    --wood-light: #804a27;
+    --wood-rail: #2b1408;
+    --wood-shadow: #140803;
+    --wood-trim: #693b1e;
+    --wood-gold-stitch: #d49a00;
 
-    --accent-red: #ff3838;
-    --accent-green: #2ed573;
+    --accent-red: #ff2a3a;
+    --accent-green: #00e676;
     --text-white: #ffffff;
     --text-dim: #9aa4b2;
-    --border-glass: rgba(255, 255, 255, 0.12);
-    --shadow-premium: 0 25px 50px rgba(0, 0, 0, 0.75), 0 0 30px rgba(245, 197, 24, 0.15);
+    --border-glass: rgba(255, 255, 255, 0.14);
+    --shadow-premium: 0 25px 50px rgba(0, 0, 0, 0.85), 0 0 35px rgba(245, 197, 24, 0.2);
     
     --font-main: 'Outfit', 'Noto Sans KR', sans-serif;
     --font-heading: 'Cinzel', 'Outfit', serif;
@@ -45,15 +46,17 @@
     -webkit-font-smoothing: antialiased;
 }
 
+/* 1000% 초고화질 라스베가스 VIP 펜트하우스 다마스크 패턴 배경 */
 body {
     background-color: var(--bg-dark);
     color: var(--text-white);
     min-height: 100vh;
     overflow-x: hidden;
     background-image: 
-        radial-gradient(circle at 50% 15%, rgba(26, 45, 75, 0.45) 0%, transparent 65%),
-        radial-gradient(circle at 85% 85%, rgba(245, 197, 24, 0.06) 0%, transparent 50%),
-        radial-gradient(circle at 15% 85%, rgba(21, 115, 71, 0.08) 0%, transparent 50%);
+        radial-gradient(circle at 50% 10%, rgba(25, 45, 80, 0.5) 0%, transparent 65%),
+        radial-gradient(circle at 85% 85%, rgba(245, 197, 24, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 15% 85%, rgba(26, 131, 79, 0.1) 0%, transparent 50%),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.012) 0px, rgba(255, 255, 255, 0.012) 2px, transparent 2px, transparent 8px);
 }
 
 /* ==========================================================
@@ -65,10 +68,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(180deg, rgba(18, 23, 33, 0.95) 0%, rgba(10, 13, 20, 0.92) 100%);
+    background: linear-gradient(180deg, rgba(16, 21, 31, 0.96) 0%, rgba(8, 11, 18, 0.94) 100%);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(245, 197, 24, 0.25);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(245, 197, 24, 0.35);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -79,7 +82,7 @@ body {
     align-items: center;
     gap: 14px;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform 0.25s ease;
 }
 
 .brand-logo:hover {
@@ -87,67 +90,67 @@ body {
 }
 
 .brand-logo .logo-icon {
-    font-size: 32px;
-    filter: drop-shadow(0 0 12px rgba(245, 197, 24, 0.8));
+    font-size: 34px;
+    filter: drop-shadow(0 0 14px rgba(245, 197, 24, 0.85));
     animation: goldShine 3s infinite alternate;
 }
 
 @keyframes goldShine {
-    0% { filter: drop-shadow(0 0 8px rgba(245, 197, 24, 0.5)); }
-    100% { filter: drop-shadow(0 0 18px rgba(255, 234, 167, 0.9)); }
+    0% { filter: drop-shadow(0 0 8px rgba(245, 197, 24, 0.5)); transform: rotate(-3deg); }
+    100% { filter: drop-shadow(0 0 20px rgba(255, 243, 176, 1)); transform: rotate(3deg); }
 }
 
 .brand-logo h1 {
     font-family: var(--font-heading);
     font-size: 26px;
     font-weight: 900;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     background: var(--gold-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
 }
 
 .brand-logo .badge-tag {
     font-size: 11px;
     font-weight: 800;
     padding: 3px 10px;
-    background: linear-gradient(135deg, rgba(245, 197, 24, 0.2) 0%, rgba(198, 149, 0, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(245, 197, 24, 0.25) 0%, rgba(198, 149, 0, 0.15) 100%);
     color: var(--gold-bright);
-    border: 1px solid rgba(245, 197, 24, 0.4);
+    border: 1px solid rgba(245, 197, 24, 0.45);
     border-radius: 20px;
     text-transform: uppercase;
-    box-shadow: inset 0 0 8px rgba(245, 197, 24, 0.2);
+    box-shadow: 0 0 10px rgba(245, 197, 24, 0.25);
 }
 
 .header-user-info {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
 }
 
 .user-chip-box {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: linear-gradient(135deg, rgba(26, 33, 48, 0.9) 0%, rgba(15, 20, 30, 0.9) 100%);
-    border: 1px solid rgba(245, 197, 24, 0.45);
+    background: linear-gradient(135deg, rgba(24, 32, 48, 0.95) 0%, rgba(12, 16, 26, 0.95) 100%);
+    border: 1.5px solid rgba(245, 197, 24, 0.5);
     padding: 7px 20px;
     border-radius: 30px;
-    box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.7), 0 4px 15px rgba(0, 0, 0, 0.4);
+    box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.8), 0 4px 18px rgba(0, 0, 0, 0.5);
 }
 
 .user-chip-box .chip-icon {
     font-size: 22px;
-    filter: drop-shadow(0 0 6px rgba(245, 197, 24, 0.6));
+    filter: drop-shadow(0 0 8px rgba(245, 197, 24, 0.7));
 }
 
 .user-chip-box .chip-amount {
     font-size: 17px;
-    font-weight: 800;
+    font-weight: 900;
     color: var(--gold-bright);
     letter-spacing: 0.5px;
-    text-shadow: 0 0 8px var(--gold-glow);
+    text-shadow: 0 0 10px var(--gold-glow);
 }
 
 .btn-refill {
@@ -157,7 +160,7 @@ body {
     padding: 8px 18px;
     border-radius: 20px;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 4px 15px rgba(245, 197, 24, 0.2);
@@ -172,7 +175,7 @@ body {
 
 .btn-sound {
     background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     color: #fff;
     width: 40px;
     height: 40px;
@@ -203,33 +206,22 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(135deg, rgba(16, 26, 43, 0.9) 0%, rgba(22, 38, 62, 0.85) 50%, rgba(13, 20, 32, 0.95) 100%);
-    border: 1px solid rgba(245, 197, 24, 0.3);
-    border-radius: 24px;
-    padding: 38px 48px;
+    background: linear-gradient(135deg, rgba(18, 28, 46, 0.92) 0%, rgba(24, 40, 68, 0.88) 50%, rgba(14, 20, 34, 0.96) 100%);
+    border: 1.5px solid rgba(245, 197, 24, 0.4);
+    border-radius: 26px;
+    padding: 40px 50px;
     margin-bottom: 40px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(245, 197, 24, 0.05);
-}
-
-.lobby-banner::before {
-    content: '';
-    position: absolute;
-    top: -40%;
-    right: -10%;
-    width: 450px;
-    height: 450px;
-    background: radial-gradient(circle, rgba(245, 197, 24, 0.2) 0%, transparent 70%);
-    pointer-events: none;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), inset 0 0 40px rgba(245, 197, 24, 0.08);
 }
 
 .banner-text h2 {
     font-family: var(--font-heading);
-    font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 10px;
-    background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+    font-size: 34px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -248,13 +240,13 @@ body {
 .btn-primary {
     background: var(--gold-gradient);
     color: #0b0e14;
-    font-weight: 800;
+    font-weight: 900;
     font-size: 15px;
     padding: 14px 30px;
     border-radius: 14px;
     border: none;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(245, 197, 24, 0.4);
+    box-shadow: 0 10px 25px rgba(245, 197, 24, 0.45);
     transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: inline-flex;
     align-items: center;
@@ -263,12 +255,12 @@ body {
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(245, 197, 24, 0.6);
+    box-shadow: 0 15px 35px rgba(245, 197, 24, 0.7);
 }
 
 .btn-secondary {
     background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.24);
     color: #fff;
     font-weight: 700;
     font-size: 15px;
@@ -279,8 +271,8 @@ body {
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.16);
-    border-color: rgba(245, 197, 24, 0.5);
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(245, 197, 24, 0.6);
 }
 
 .lobby-header-bar {
@@ -292,7 +284,7 @@ body {
 
 .lobby-header-bar h3 {
     font-size: 22px;
-    font-weight: 700;
+    font-weight: 800;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -304,7 +296,7 @@ body {
     background: #00e676;
     border-radius: 50%;
     display: inline-block;
-    box-shadow: 0 0 12px #00e676;
+    box-shadow: 0 0 14px #00e676;
     animation: pulse 1.5s infinite;
 }
 
@@ -316,8 +308,8 @@ body {
 }
 
 .room-card {
-    background: linear-gradient(145deg, rgba(22, 30, 46, 0.88) 0%, rgba(14, 18, 28, 0.95) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(145deg, rgba(22, 30, 46, 0.92) 0%, rgba(14, 18, 28, 0.98) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 20px;
     padding: 24px;
     display: flex;
@@ -343,9 +335,9 @@ body {
 }
 
 .room-card:hover {
-    border-color: rgba(245, 197, 24, 0.5);
+    border-color: rgba(245, 197, 24, 0.6);
     transform: translateY(-6px);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(245, 197, 24, 0.2);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 25px rgba(245, 197, 24, 0.25);
 }
 
 .room-card:hover::after {
@@ -367,12 +359,12 @@ body {
 }
 
 .room-players-badge {
-    background: rgba(245, 197, 24, 0.12);
-    border: 1px solid rgba(245, 197, 24, 0.35);
+    background: rgba(245, 197, 24, 0.14);
+    border: 1px solid rgba(245, 197, 24, 0.4);
     padding: 4px 12px;
     border-radius: 14px;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--gold-bright);
 }
 
@@ -397,9 +389,9 @@ body {
 
 .meta-row .val.pot {
     color: var(--gold-bright);
-    font-weight: 800;
-    font-size: 15px;
-    text-shadow: 0 0 8px rgba(245, 197, 24, 0.4);
+    font-weight: 900;
+    font-size: 16px;
+    text-shadow: 0 0 10px rgba(245, 197, 24, 0.5);
 }
 
 .room-card-footer {
@@ -422,10 +414,10 @@ body {
 }
 
 .btn-enter-room {
-    background: linear-gradient(135deg, rgba(245, 197, 24, 0.2) 0%, rgba(198, 149, 0, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(245, 197, 24, 0.22) 0%, rgba(198, 149, 0, 0.12) 100%);
     border: 1px solid var(--gold-primary);
     color: var(--gold-bright);
-    font-weight: 700;
+    font-weight: 800;
     font-size: 13px;
     padding: 7px 20px;
     border-radius: 12px;
@@ -440,7 +432,7 @@ body {
 }
 
 /* ====================================================================
-   🔥 500% 그래픽 혁신: 세븐포커 6~9인 마호가니 & 가죽 펠트 테이블
+   🔥 1000% 그래픽 혁신: 세븐포커 6인 마호가니 레더 림 & 에메랄드 벨벳 펠트
    ==================================================================== */
 .table-view-container {
     max-width: 1500px;
@@ -464,20 +456,20 @@ body {
 
 .table-room-meta h2 {
     font-family: var(--font-heading);
-    font-size: 24px;
-    font-weight: 800;
+    font-size: 25px;
+    font-weight: 900;
     color: var(--gold-bright);
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
 }
 
 .btn-back-lobby {
     background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     color: #fff;
     padding: 9px 20px;
     border-radius: 12px;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -497,12 +489,12 @@ body {
     /* 3중 마호가니 원목 + 레더 림 베젤 */
     border: 26px solid #24140b;
     box-shadow: 
-        inset 0 0 100px rgba(0, 0, 0, 0.95),
-        inset 0 0 40px rgba(0, 0, 0, 0.8),
-        0 25px 60px rgba(0, 0, 0, 0.95),
+        inset 0 0 110px rgba(0, 0, 0, 0.98),
+        inset 0 0 45px rgba(0, 0, 0, 0.85),
+        0 25px 65px rgba(0, 0, 0, 0.98),
         0 0 0 5px #5c341b,
         0 0 0 10px #1a0d06,
-        0 0 0 14px rgba(245, 197, 24, 0.35);
+        0 0 0 15px rgba(245, 197, 24, 0.4);
 
     /* 라스베가스 VIP 딥 에메랄드 벨벳 펠트 질감 */
     background: radial-gradient(ellipse at 50% 45%, #187a4d 0%, #105936 40%, #0a3b23 75%, #051e12 100%);
@@ -518,7 +510,7 @@ body {
     left: 15%;
     right: 15%;
     height: 60%;
-    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.12) 0%, rgba(245, 197, 24, 0.05) 50%, transparent 80%);
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.14) 0%, rgba(245, 197, 24, 0.06) 50%, transparent 80%);
     pointer-events: none;
     z-index: 2;
 }
@@ -531,8 +523,8 @@ body {
     right: 11%;
     bottom: 14%;
     border-radius: 240px;
-    border: 2px dashed rgba(245, 197, 24, 0.35);
-    box-shadow: 0 0 15px rgba(245, 197, 24, 0.12), inset 0 0 15px rgba(245, 197, 24, 0.1);
+    border: 2px dashed rgba(245, 197, 24, 0.4);
+    box-shadow: 0 0 18px rgba(245, 197, 24, 0.15), inset 0 0 18px rgba(245, 197, 24, 0.12);
     pointer-events: none;
     z-index: 3;
 }
@@ -544,11 +536,11 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: var(--font-heading);
-    font-size: 42px;
+    font-size: 44px;
     font-weight: 900;
-    letter-spacing: 6px;
-    color: rgba(0, 0, 0, 0.18);
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.08);
+    letter-spacing: 7px;
+    color: rgba(0, 0, 0, 0.22);
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.1);
     pointer-events: none;
     user-select: none;
     z-index: 4;
@@ -566,12 +558,12 @@ body {
 }
 
 .pot-badge-container {
-    background: linear-gradient(145deg, rgba(14, 20, 32, 0.95) 0%, rgba(8, 12, 20, 0.95) 100%);
-    border: 2px solid rgba(245, 197, 24, 0.6);
-    padding: 12px 32px;
+    background: linear-gradient(145deg, rgba(14, 20, 32, 0.96) 0%, rgba(8, 12, 20, 0.98) 100%);
+    border: 2px solid rgba(245, 197, 24, 0.65);
+    padding: 12px 34px;
     border-radius: 36px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(245, 197, 24, 0.3);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8), 0 0 30px rgba(245, 197, 24, 0.35);
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -580,17 +572,17 @@ body {
 .pot-label {
     font-family: var(--font-heading);
     font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 2.5px;
+    font-weight: 900;
+    letter-spacing: 3px;
     color: var(--gold-bright);
     text-transform: uppercase;
 }
 
 .pot-value {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 900;
     color: var(--gold-bright);
-    text-shadow: 0 0 15px var(--gold-glow);
+    text-shadow: 0 0 18px var(--gold-glow);
     margin-top: 2px;
 }
 
@@ -599,71 +591,93 @@ body {
     font-size: 14px;
     font-weight: 800;
     color: #a3e635;
-    background: rgba(0, 0, 0, 0.65);
-    border: 1px solid rgba(163, 230, 53, 0.4);
-    padding: 5px 16px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(163, 230, 53, 0.45);
+    padding: 5px 18px;
     border-radius: 16px;
     display: inline-block;
-    box-shadow: 0 0 12px rgba(163, 230, 53, 0.25);
+    box-shadow: 0 0 15px rgba(163, 230, 53, 0.3);
 }
 
 /* ====================================================================
-   🔥 500% 그래픽 혁신: 고화질 플레잉 카드 (Playing Cards)
+   🔥 1000% 그래픽 & 3D 오픈 연출: 초고화질 플레잉 카드 (Playing Cards)
    ==================================================================== */
 .hand-container {
     display: flex;
     justify-content: center;
-    margin-top: 8px;
-    height: 70px;
+    align-items: flex-end;
+    margin-top: 6px;
+    height: 74px;
     position: relative;
     width: 100%;
+    perspective: 1000px; /* 3D 공간 원근감 */
 }
 
-/* 카드 기본 규격 */
+/* 카드 기본 규격 및 3D 플립 애니메이션 준비 */
 .poker-card {
-    width: 46px;
-    height: 66px;
-    background: linear-gradient(135deg, #ffffff 0%, #f4f6f8 100%);
-    border-radius: 6px;
-    border: 1px solid #c8d1dc;
+    width: 48px;
+    height: 68px;
+    background: linear-gradient(135deg, #ffffff 0%, #f1f4f8 100%);
+    border-radius: 7px;
+    border: 1.5px solid #b8c4d2;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 4px;
-    box-shadow: -3px 4px 10px rgba(0, 0, 0, 0.55), 0 1px 3px rgba(0, 0, 0, 0.2);
-    margin-left: -18px; /* 카드 겹치기 */
+    padding: 3px 4px;
+    box-shadow: -3px 5px 12px rgba(0, 0, 0, 0.65), 0 1px 3px rgba(0, 0, 0, 0.3);
     user-select: none;
-    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s ease;
     position: relative;
     overflow: hidden;
+    transform-origin: center bottom;
 }
 
-/* 카드 상단 빛 반사(Glossy Glare) */
+/* 딜링 및 오픈 시 3D 플립 애니메이션 (@keyframes cardFlip3D) */
+.poker-card.anim-flip {
+    animation: cardFlip3D 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes cardFlip3D {
+    0% {
+        transform: rotateY(90deg) scale(0.85);
+        opacity: 0.5;
+        filter: brightness(1.8);
+    }
+    50% {
+        filter: brightness(2);
+        box-shadow: 0 0 25px rgba(255, 243, 176, 1);
+    }
+    100% {
+        transform: rotateY(0deg) scale(1);
+        opacity: 1;
+        filter: brightness(1);
+    }
+}
+
+/* 카드 상단 초정밀 글레어(Glossy Glare) 광택 반사 */
 .poker-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 45%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, transparent 100%);
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.05) 100%);
     pointer-events: none;
+    z-index: 1;
 }
 
-.poker-card:first-child {
-    margin-left: 0;
-}
-
-/* 레드 문양 (하트 ♥, 다이아 ♦) */
+/* 레드 문양 (하트 ♥, 다이아 ♦) - 비비드 카지노 레드 */
 .poker-card.red {
     color: #e71d36;
 }
 
-/* 블랙 문양 (스페이드 ♠, 클로버 ♣) */
+/* 블랙 문양 (스페이드 ♠, 클로버 ♣) - 딥 옵시디언 블랙 */
 .poker-card.black {
-    color: #1a1e29;
+    color: #11151e;
 }
 
+/* 상하단 코너 인덱스 (카지노 규격) */
 .card-corner {
     display: flex;
     flex-direction: column;
@@ -691,33 +705,60 @@ body {
     align-self: center;
     font-size: 18px;
     z-index: 2;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
 
-/* K, Q, J 페이스 카드 로얄 장식 */
+/* K, Q, J, A 로얄 페이스 카드 엠블럼 아트 */
 .poker-card.face-card .card-center-suit {
     font-size: 20px;
     transform: scale(1.15);
+    filter: drop-shadow(0 2px 4px rgba(245, 197, 24, 0.35));
 }
 
-/* 히든 카드 (럭셔리 골드 & 네이비 기하학적 패브릭 뒷면) */
+.poker-card.face-card {
+    border-color: #ffd700;
+    box-shadow: -3px 5px 14px rgba(0, 0, 0, 0.7), 0 0 6px rgba(245, 197, 24, 0.3);
+}
+
+.poker-card.ace-card {
+    border-color: #ffd700;
+    box-shadow: -3px 5px 16px rgba(0, 0, 0, 0.75), 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.poker-card.ace-card .card-center-suit {
+    font-size: 22px;
+    transform: scale(1.25);
+    filter: drop-shadow(0 2px 6px rgba(245, 197, 24, 0.6));
+}
+
+/* 히든 카드 (울트라 럭셔리 골드 & 딥 네이비 기하학적 패브릭 패턴) */
 .poker-card.hidden-card {
     background: 
-        radial-gradient(circle at center, #1b2838 0%, #0d1522 100%),
-        repeating-linear-gradient(45deg, rgba(245, 197, 24, 0.15) 0px, rgba(245, 197, 24, 0.15) 2px, transparent 2px, transparent 6px);
-    border: 2px solid rgba(245, 197, 24, 0.6);
-    box-shadow: -3px 4px 10px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(0, 0, 0, 0.8);
+        radial-gradient(circle at center, #1e293b 0%, #0a0f18 100%),
+        repeating-linear-gradient(45deg, rgba(245, 197, 24, 0.18) 0px, rgba(245, 197, 24, 0.18) 2px, transparent 2px, transparent 6px);
+    border: 2px solid rgba(245, 197, 24, 0.7);
+    box-shadow: -3px 5px 12px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(0, 0, 0, 0.9);
 }
 
 .poker-card.hidden-card::after {
     content: '♠';
-    color: rgba(245, 197, 24, 0.7);
-    font-size: 22px;
+    color: rgba(245, 197, 24, 0.8);
+    font-size: 24px;
     margin: auto;
-    filter: drop-shadow(0 0 6px rgba(245, 197, 24, 0.5));
+    filter: drop-shadow(0 0 8px rgba(245, 197, 24, 0.6));
+    z-index: 2;
 }
 
-/* 3구 초이스 선택 모드 (유저 카드 클릭 유도) */
+/* 부채꼴 아치형(Fan-Out) 카드 겹치기 및 손맛 연출 */
+.hand-container .poker-card {
+    margin-left: -18px;
+}
+
+.hand-container .poker-card:first-child {
+    margin-left: 0;
+}
+
+/* 3구 초이스 선택 모드 (공중 부양 & 펄스) */
 .hand-container.choice-mode .poker-card {
     cursor: pointer;
     border: 2px solid var(--gold-bright);
@@ -725,30 +766,30 @@ body {
 }
 
 .hand-container.choice-mode .poker-card:hover {
-    transform: translateY(-12px) scale(1.15);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 25px var(--gold-glow);
-    z-index: 30;
+    transform: translateY(-16px) scale(1.18) !important;
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.85), 0 0 30px var(--gold-glow);
+    z-index: 40 !important;
 }
 
 @keyframes choiceFloat {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-6px); }
+    100% { transform: translateY(-7px); }
 }
 
-/* 실제 유저 카드에 마우스 오버 시 3D 쪼기(Squeeze) & 리프트 */
+/* 실제 유저 카드에 마우스 오버 시 3D 공중 리프트 & 쪼기 인터랙션 */
 .player-card-box.user-box .poker-card:hover {
-    transform: translateY(-10px) rotate(-2deg) scale(1.1);
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.7), 0 0 20px var(--gold-glow);
-    z-index: 25;
+    transform: translateY(-14px) scale(1.15) !important;
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.8), 0 0 25px var(--gold-glow);
+    z-index: 35 !important;
 }
 
 /* ====================================================================
-   플레이어 좌석 (Seats: 6~9인 타원형 배치)
+   플레이어 좌석 (6인 전용 와이드 VIP 배치)
    ==================================================================== */
 .seat-spot {
     position: absolute;
-    width: 180px;
-    height: 155px;
+    width: 185px;
+    height: 160px;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
@@ -759,11 +800,11 @@ body {
 
 /* 빈 자리 버튼 */
 .btn-sit-here {
-    width: 96px;
-    height: 96px;
+    width: 98px;
+    height: 98px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 0, 0, 0.6) 0%, rgba(14, 20, 32, 0.8) 100%);
-    border: 2px dashed rgba(245, 197, 24, 0.5);
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.7) 0%, rgba(14, 20, 32, 0.85) 100%);
+    border: 2px dashed rgba(245, 197, 24, 0.55);
     color: var(--gold-bright);
     font-size: 13px;
     font-weight: 800;
@@ -774,46 +815,46 @@ body {
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     gap: 4px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
 }
 
 .btn-sit-here:hover {
     border-color: #fff;
     color: #fff;
-    background: radial-gradient(circle, rgba(245, 197, 24, 0.3) 0%, rgba(14, 20, 32, 0.9) 100%);
+    background: radial-gradient(circle, rgba(245, 197, 24, 0.35) 0%, rgba(14, 20, 32, 0.95) 100%);
     transform: scale(1.1);
-    box-shadow: 0 0 25px var(--gold-glow);
+    box-shadow: 0 0 30px var(--gold-glow);
 }
 
 /* 플레이어 카드 박스 (VIP 플레이트) */
 .player-card-box {
-    background: linear-gradient(145deg, rgba(20, 27, 40, 0.94) 0%, rgba(11, 15, 23, 0.97) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: linear-gradient(145deg, rgba(22, 30, 46, 0.96) 0%, rgba(10, 14, 22, 0.98) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
     border-radius: 18px;
     padding: 10px 14px;
-    width: 168px;
+    width: 172px;
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75), inset 0 0 15px rgba(255, 255, 255, 0.04);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.05);
     position: relative;
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(14px);
     transition: all 0.3s ease;
 }
 
 /* 현재 턴 플레이어 (골드 네온 펄스 링) */
 .player-card-box.active-turn {
     border-color: var(--gold-primary);
-    box-shadow: 0 0 35px var(--gold-glow), 0 10px 30px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 40px var(--gold-glow), 0 10px 35px rgba(0, 0, 0, 0.85);
     animation: activeGlow 1.4s infinite alternate;
 }
 
 @keyframes activeGlow {
     0% { border-color: var(--gold-primary); box-shadow: 0 0 20px rgba(245, 197, 24, 0.4); }
-    100% { border-color: #fff3b0; box-shadow: 0 0 40px rgba(245, 197, 24, 0.8); }
+    100% { border-color: #fff3b0; box-shadow: 0 0 45px rgba(245, 197, 24, 0.85); }
 }
 
 .player-card-box.folded {
-    opacity: 0.4;
-    filter: grayscale(85%);
+    opacity: 0.35;
+    filter: grayscale(90%);
 }
 
 .player-header {
@@ -830,7 +871,7 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100px;
+    max-width: 105px;
 }
 
 .player-avatar {
@@ -839,7 +880,7 @@ body {
 
 .player-chips {
     font-size: 13px;
-    font-weight: 800;
+    font-weight: 900;
     color: var(--gold-bright);
     letter-spacing: 0.3px;
 }
@@ -848,8 +889,8 @@ body {
     font-size: 11px;
     font-weight: 800;
     color: #fff;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.08) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     padding: 3px 8px;
     border-radius: 8px;
     margin-top: 6px;
@@ -877,8 +918,8 @@ body {
    하단 배팅 컨트롤 패널 (VIP 콘솔)
    ========================================================== */
 .betting-control-panel {
-    background: linear-gradient(180deg, rgba(16, 22, 33, 0.96) 0%, rgba(10, 14, 21, 0.98) 100%);
-    border: 1px solid rgba(245, 197, 24, 0.35);
+    background: linear-gradient(180deg, rgba(16, 22, 33, 0.98) 0%, rgba(8, 12, 18, 0.99) 100%);
+    border: 1.5px solid rgba(245, 197, 24, 0.4);
     border-radius: 24px;
     padding: 18px 32px;
     display: flex;
@@ -895,15 +936,15 @@ body {
 }
 
 .user-hand-name {
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 900;
     color: var(--gold-bright);
-    text-shadow: 0 0 10px var(--gold-glow);
+    text-shadow: 0 0 12px var(--gold-glow);
 }
 
 .user-hand-sub {
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text-dim);
 }
 
@@ -914,8 +955,8 @@ body {
 }
 
 .btn-action {
-    background: linear-gradient(145deg, rgba(30, 40, 58, 0.9) 0%, rgba(18, 24, 36, 0.9) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: linear-gradient(145deg, rgba(30, 40, 58, 0.92) 0%, rgba(18, 24, 36, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: #fff;
     font-size: 15px;
     font-weight: 800;
@@ -949,8 +990,8 @@ body {
 }
 
 .btn-action.fold {
-    background: linear-gradient(145deg, rgba(74, 21, 28, 0.85) 0%, rgba(46, 12, 17, 0.95) 100%);
-    border-color: rgba(255, 71, 87, 0.5);
+    background: linear-gradient(145deg, rgba(74, 21, 28, 0.88) 0%, rgba(46, 12, 17, 0.96) 100%);
+    border-color: rgba(255, 71, 87, 0.55);
     color: #ff6b81;
 }
 
@@ -961,8 +1002,8 @@ body {
 }
 
 .btn-action.check-call {
-    background: linear-gradient(145deg, rgba(20, 64, 40, 0.85) 0%, rgba(12, 40, 24, 0.95) 100%);
-    border-color: rgba(46, 213, 115, 0.5);
+    background: linear-gradient(145deg, rgba(20, 64, 40, 0.88) 0%, rgba(12, 40, 24, 0.96) 100%);
+    border-color: rgba(46, 213, 115, 0.55);
     color: #2ed573;
 }
 
@@ -973,8 +1014,8 @@ body {
 }
 
 .btn-action.raise-half {
-    background: linear-gradient(145deg, rgba(64, 52, 18, 0.85) 0%, rgba(40, 32, 10, 0.95) 100%);
-    border-color: rgba(245, 197, 24, 0.5);
+    background: linear-gradient(145deg, rgba(64, 52, 18, 0.88) 0%, rgba(40, 32, 10, 0.96) 100%);
+    border-color: rgba(245, 197, 24, 0.55);
     color: var(--gold-bright);
 }
 
@@ -993,8 +1034,36 @@ body {
 }
 
 .btn-action.all-in:hover:not(:disabled) {
-    box-shadow: 0 0 30px rgba(255, 71, 87, 0.8);
+    box-shadow: 0 0 30px rgba(255, 71, 87, 0.85);
     transform: translateY(-4px) scale(1.05);
+}
+
+/* 🔥 참여 대기 전용 네온 펄스 애니메이션 (시선 집중 1000%) */
+.join-neon-pulse {
+    background: linear-gradient(135deg, #ffe082 0%, #f5c518 50%, #c69500 100%) !important;
+    color: #000 !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 25px rgba(245, 197, 24, 0.85), 0 6px 18px rgba(0, 0, 0, 0.6) !important;
+    animation: neonJoinPulse 1.2s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.join-neon-pulse:hover {
+    transform: scale(1.08) !important;
+    box-shadow: 0 0 45px rgba(255, 243, 176, 1), 0 8px 30px rgba(0, 0, 0, 0.85) !important;
+}
+
+@keyframes neonJoinPulse {
+    0% {
+        box-shadow: 0 0 15px rgba(245, 197, 24, 0.5), 0 0 0 0 rgba(245, 197, 24, 0.4);
+        transform: scale(1);
+    }
+    100% {
+        box-shadow: 0 0 35px rgba(255, 243, 176, 0.95), 0 0 0 12px rgba(245, 197, 24, 0);
+        transform: scale(1.03);
+    }
 }
 
 /* ==========================================================
@@ -1011,7 +1080,7 @@ body {
     padding: 30px 50px;
     text-align: center;
     z-index: 100;
-    box-shadow: 0 0 70px rgba(245, 197, 24, 0.6), 0 25px 60px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 0 70px rgba(245, 197, 24, 0.65), 0 25px 60px rgba(0, 0, 0, 0.9);
     display: none;
     animation: popWinner 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -1058,7 +1127,7 @@ body {
 }
 
 /* ==========================================================
-   모달 (Modal - 방 만들기 & 족보 가이드)
+   모달 (Modal)
    ========================================================== */
 .modal-overlay {
     position: fixed;
@@ -1066,8 +1135,8 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1084,12 +1153,12 @@ body {
 
 .modal-content {
     background: linear-gradient(145deg, #161c28 0%, #0e121a 100%);
-    border: 1px solid rgba(245, 197, 24, 0.35);
+    border: 1.5px solid rgba(245, 197, 24, 0.4);
     border-radius: 26px;
     padding: 36px;
     width: 90%;
     max-width: 500px;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(245, 197, 24, 0.15);
+    box-shadow: 0 30px 65px rgba(0, 0, 0, 0.9), 0 0 35px rgba(245, 197, 24, 0.2);
     transform: scale(0.95);
     transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -1107,7 +1176,7 @@ body {
 
 .modal-header h3 {
     font-size: 22px;
-    font-weight: 800;
+    font-weight: 900;
     color: #fff;
 }
 
@@ -1170,35 +1239,6 @@ body {
     font-weight: 800;
 }
 
-/* 🔥 참여 대기 전용 네온 펄스 애니메이션 (시선 집중 1000%) */
-.join-neon-pulse {
-    background: linear-gradient(135deg, #ffe082 0%, #f5c518 50%, #c69500 100%) !important;
-    color: #000 !important;
-    font-weight: 900 !important;
-    letter-spacing: 0.5px;
-    box-shadow: 0 0 25px rgba(245, 197, 24, 0.8), 0 5px 15px rgba(0, 0, 0, 0.5) !important;
-    animation: neonJoinPulse 1.2s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.join-neon-pulse:hover {
-    transform: scale(1.08) !important;
-    box-shadow: 0 0 40px rgba(255, 234, 167, 1), 0 8px 25px rgba(0, 0, 0, 0.8) !important;
-}
-
-@keyframes neonJoinPulse {
-    0% {
-        box-shadow: 0 0 15px rgba(245, 197, 24, 0.5), 0 0 0 0 rgba(245, 197, 24, 0.4);
-        transform: scale(1);
-    }
-    100% {
-        box-shadow: 0 0 35px rgba(255, 234, 167, 0.9), 0 0 0 10px rgba(245, 197, 24, 0);
-        transform: scale(1.03);
-    }
-}
-
-/* 어드민 관리자 회원 관리 테이블 요소 */
 .btn-admin-action {
     padding: 4px 10px;
     border-radius: 8px;

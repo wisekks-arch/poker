@@ -683,9 +683,10 @@ class App {
                 const isFolded = player.isFolded;
 
                 let cardHTML = '';
+                const totalCards = player.hand.length;
                 player.hand.forEach((card, cIdx) => {
                     const showFace = !card.isHidden || isUserMe || (state.phase === 'SHOWDOWN' && !player.isFolded);
-                    cardHTML += this.createCardHTML(card, showFace, isChoiceMode, cIdx);
+                    cardHTML += this.createCardHTML(card, showFace, isChoiceMode, cIdx, totalCards);
                 });
 
                 seatSpot.innerHTML = `
@@ -708,6 +709,7 @@ class App {
                     const cardElements = seatSpot.querySelectorAll('.poker-card');
                     cardElements.forEach((el, cardIndex) => {
                         el.addEventListener('click', () => {
+                            if (window.pokerAudio) window.pokerAudio.playCardFlip();
                             this.currentEngine.handleUserOpenChoice(cardIndex);
                         });
                     });
@@ -718,14 +720,28 @@ class App {
         }
     }
 
-    createCardHTML(card, showFace, isChoiceMode = false, cardIndex = 0) {
-        if (!showFace) {
-            return `<div class="poker-card hidden-card" data-idx="${cardIndex}"></div>`;
+    createCardHTML(card, showFace, isChoiceMode = false, cardIndex = 0, totalCards = 1) {
+        // 부채꼴 아치형 회전 및 자연스러운 곡선 계산
+        let rotateDeg = 0;
+        let translateYPx = 0;
+        if (totalCards > 1) {
+            const mid = (totalCards - 1) / 2;
+            const diff = cardIndex - mid;
+            rotateDeg = (diff * 3.5).toFixed(1);
+            translateYPx = (Math.abs(diff) * 2.2).toFixed(1);
         }
+        const styleAttr = `style="transform: rotate(${rotateDeg}deg) translateY(${translateYPx}px); z-index: ${cardIndex + 1};"`;
+
+        if (!showFace) {
+            return `<div class="poker-card hidden-card" data-idx="${cardIndex}" ${styleAttr} title="히든 카드"></div>`;
+        }
+
         const colorClass = card.suit.color === 'red' ? 'red' : 'black';
         const isFace = ['K', 'Q', 'J', 'A'].includes(card.rank.name);
+        const isAce = card.rank.name === 'A';
+
         return `
-            <div class="poker-card ${colorClass} ${isFace ? 'face-card' : ''}" data-idx="${cardIndex}" title="${card.rank.name}${card.suit.symbol}">
+            <div class="poker-card ${colorClass} ${isFace ? 'face-card' : ''} ${isAce ? 'ace-card' : ''} anim-flip" data-idx="${cardIndex}" ${styleAttr} title="${card.rank.name}${card.suit.symbol}">
                 <div class="card-corner top">
                     <span class="card-rank">${card.rank.display}</span>
                     <span class="card-suit">${card.suit.symbol}</span>
