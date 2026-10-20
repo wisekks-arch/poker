@@ -194,9 +194,9 @@
             </div>
             <form id="formRegister">
                 <div class="form-group">
-                    <label for="regUsername">아이디 (ID)</label>
-                    <input type="text" id="regUsername" class="form-control" placeholder="아이디를 입력하세요" required
-                        minlength="3" maxlength="15">
+                    <label for="regUsername">아이디 (ID / 이메일)</label>
+                    <input type="text" id="regUsername" class="form-control" placeholder="아이디 또는 이메일 입력 (최대 30자)" required
+                        minlength="3" maxlength="30">
                 </div>
                 <div class="form-group">
                     <label for="regPassword">비밀번호</label>
@@ -216,9 +216,12 @@
                     style="background: rgba(245, 197, 24, 0.1); border: 1px solid rgba(245, 197, 24, 0.3); padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 13px; color: var(--gold-bright);">
                     🎁 <strong>가입 즉시 10,000,000원</strong> 게임머니가 충전됩니다!
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 12px;">
                     회원가입 완료 및 1,000만원 받기
                 </button>
+                <div style="text-align: center;">
+                    <a href="#" id="linkGoLogin" style="color: var(--text-dim); font-size: 13px; text-decoration: underline;">이미 계정이 있으신가요? 로그인하기</a>
+                </div>
             </form>
         </div>
     </div>
@@ -232,8 +235,8 @@
             </div>
             <form id="formLogin">
                 <div class="form-group">
-                    <label for="loginUsername">아이디</label>
-                    <input type="text" id="loginUsername" class="form-control" placeholder="아이디 입력" required>
+                    <label for="loginUsername">아이디 / 이메일</label>
+                    <input type="text" id="loginUsername" class="form-control" placeholder="아이디 또는 이메일 입력" required maxlength="30">
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">비밀번호</label>
@@ -474,14 +477,14 @@
         </div>
     </div>
 
-    <!-- 스크립트 모듈 로드 -->
-    <script src="js/audio.js"></script>
-    <script src="js/poker-evaluator.js"></script>
-    <script src="js/ai-bot.js"></script>
-    <script src="js/game-engine.js"></script>
-    <script src="js/room-manager.js"></script>
-    <script src="js/auth-manager.js"></script>
-    <script src="js/main.js"></script>
+    <!-- 스크립트 모듈 로드 (강력한 캐시 방지 버전 적용) -->
+    <script src="js/audio.js?v=20261020_v4"></script>
+    <script src="js/poker-evaluator.js?v=20261020_v4"></script>
+    <script src="js/ai-bot.js?v=20261020_v4"></script>
+    <script src="js/game-engine.js?v=20261020_v4"></script>
+    <script src="js/room-manager.js?v=20261020_v4"></script>
+    <script src="js/auth-manager.js?v=20261020_v4"></script>
+    <script src="js/main.js?v=20261020_v4"></script>
 </body>
 
 </html>
