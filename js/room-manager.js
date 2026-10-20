@@ -76,13 +76,20 @@ class RoomManager {
                 name: state.roomName,
                 maxPlayers: state.maxPlayers,
                 currentPlayers: activePlayerCount,
+                playerCount: activePlayerCount,
                 seedMoney: state.seedMoney,
                 pot: state.pot,
+                street: state.street,
                 streetText: streetText,
                 isFull: activePlayerCount >= state.maxPlayers
             });
         }
         return list;
+    }
+
+    // 단일 게임방 엔진 가져오기
+    getRoom(roomId) {
+        return this.rooms.get(roomId) || null;
     }
 
     // 방 입장

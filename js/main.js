@@ -762,15 +762,18 @@ class App {
             const card = document.createElement('div');
             card.className = 'room-card';
 
-            let streetLabel = '게임 대기 중';
+            let streetLabel = room.streetText || '게임 대기 중';
             if (room.street === 3) streetLabel = '3구 초이스';
-            else if (room.street > 3) streetLabel = `${room.street}구 배팅`;
+            else if (room.street > 3 && room.street <= 7) streetLabel = `${room.street}구 배팅`;
+            else if (room.street === 8) streetLabel = '쇼다운!';
+
+            const playersCount = room.currentPlayers || room.playerCount || 0;
 
             card.innerHTML = `
                 <div>
                     <div class="room-card-header">
                         <div class="room-title">${room.name}</div>
-                        <span class="room-players-badge">${room.playerCount}/${room.maxPlayers}명</span>
+                        <span class="room-players-badge">${playersCount}/${room.maxPlayers}명</span>
                     </div>
                     <div class="room-meta-info">
                         <div class="meta-row">

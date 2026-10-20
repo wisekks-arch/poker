@@ -28,13 +28,25 @@ class PokerGameEngine {
         this.initSeats();
     }
 
-    onUpdate(fn) {
-        this.eventListeners.push(fn);
+    setBackground(isBg) {
+        this.isBackground = Boolean(isBg);
+    }
+
+    set onUpdate(fn) {
+        this._onUpdateHandler = fn;
+    }
+
+    get onUpdate() {
+        return this._onUpdateHandler;
     }
 
     notify() {
+        const state = this.getState();
         for (const fn of this.eventListeners) {
-            try { fn(this.getState()); } catch (e) { }
+            try { fn(state); } catch (e) { }
+        }
+        if (typeof this._onUpdateHandler === 'function') {
+            try { this._onUpdateHandler(state); } catch (e) { }
         }
     }
 
@@ -158,17 +170,23 @@ class PokerGameEngine {
     runNextRound() {
         if (!this.loopRunning) return;
 
-        // 파산한 봇 재충전
+        // 1. 머니 부족한 봇 재충전
         for (const p of this.players) {
-            if (p && p.isBot && p.money < this.seedMoney * 3) {
+            if (p && p.isBot && p.money < this.seedMoney * 2) {
                 p.money = Math.floor(Math.random() * 4000000) + 6000000;
             }
         }
 
-        // 참가 가능 인원 확인
-        const activeSeats = this.players.filter(p => p && p.money >= this.seedMoney);
+        // 2. 게임 참여 가능한 인원 확인 및 부족 시 봇 자동 리필
+        let activeSeats = this.players.filter(p => p && p.money >= this.seedMoney);
         if (activeSeats.length < 2) {
-            this.turnTimeout = setTimeout(() => this.runNextRound(), 2000);
+            this.fillWithBots();
+            activeSeats = this.players.filter(p => p && p.money >= this.seedMoney);
+        }
+
+        // 3. 2명 이상의 플레이어가 있으면 게임 즉시 진행
+        if (activeSeats.length < 2) {
+            this.turnTimeout = setTimeout(() => this.runNextRound(), 1000);
             return;
         }
 
