@@ -368,19 +368,19 @@ class App {
             } else {
                 // 플레이어 박스
                 const isMyTurn = (state.activePlayerIndex === i);
-                const isChoiceMode = (player.id === (userPlayer && userPlayer.id) && state.phase === 'CHOICE_OPEN');
+                const isUserMe = Boolean(userPlayer && player.id === userPlayer.id);
+                const isChoiceMode = (isUserMe && state.phase === 'CHOICE_OPEN');
                 const isFolded = player.isFolded;
 
                 let cardHTML = '';
                 player.hand.forEach((card, cIdx) => {
                     // 실제 유저 본인의 카드는 히든이어도 볼 수 있음 (세븐포커 본인 히든 확인 가능)
-                    const isUserMe = (userPlayer && player.id === userPlayer.id);
                     const showFace = !card.isHidden || isUserMe || (state.phase === 'SHOWDOWN' && !player.isFolded);
                     cardHTML += this.createCardHTML(card, showFace, isChoiceMode, cIdx);
                 });
 
                 seatSpot.innerHTML = `
-                    <div class="player-card-box ${isMyTurn ? 'active-turn' : ''} ${isFolded ? 'folded' : ''}">
+                    <div class="player-card-box ${isMyTurn ? 'active-turn' : ''} ${isFolded ? 'folded' : ''} ${isUserMe ? 'user-box' : ''}">
                         ${player.isBoss ? '<span class="boss-badge">👑 BOSS</span>' : ''}
                         <div class="player-header">
                             <span class="player-name">${player.name}</span>
@@ -414,13 +414,18 @@ class App {
             return `<div class="poker-card hidden-card" data-idx="${cardIndex}"></div>`;
         }
         const colorClass = card.suit.color === 'red' ? 'red' : 'black';
+        const isFace = ['K', 'Q', 'J', 'A'].includes(card.rank.name);
         return `
-            <div class="poker-card ${colorClass}" data-idx="${cardIndex}" title="${card.rank.name}${card.suit.symbol}">
-                <div class="card-corner">
+            <div class="poker-card ${colorClass} ${isFace ? 'face-card' : ''}" data-idx="${cardIndex}" title="${card.rank.name}${card.suit.symbol}">
+                <div class="card-corner top">
                     <span class="card-rank">${card.rank.display}</span>
                     <span class="card-suit">${card.suit.symbol}</span>
                 </div>
                 <div class="card-center-suit">${card.suit.symbol}</div>
+                <div class="card-corner bottom">
+                    <span class="card-rank">${card.rank.display}</span>
+                    <span class="card-suit">${card.suit.symbol}</span>
+                </div>
             </div>
         `;
     }
