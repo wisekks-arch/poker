@@ -4,6 +4,8 @@
 window.alert = function(msg) {
     if (window.app && typeof window.app.showModalAlert === 'function') {
         window.app.showModalAlert(String(msg));
+    } else if (typeof window.__showCustomAlert === 'function') {
+        window.__showCustomAlert(String(msg));
     } else {
         console.warn('[Alert Blocked]:', msg);
     }
@@ -214,6 +216,11 @@ class App {
             btnAdminRefreshUsers: document.getElementById('btnAdminRefreshUsers'),
             btnAdminResetAllRooms: document.getElementById('btnAdminResetAllRooms'),
 
+            loginErrorNotice: document.getElementById('loginErrorNotice'),
+            registerErrorNotice: document.getElementById('registerErrorNotice'),
+            findIdErrorNotice: document.getElementById('findIdErrorNotice'),
+            findPwErrorNotice: document.getElementById('findPwErrorNotice'),
+
             // 커스텀 다이얼로그 모달 (URL 주소 없는 팝업)
             customAlertModal: document.getElementById('customAlertModal'),
             customAlertIcon: document.getElementById('customAlertIcon'),
@@ -236,13 +243,21 @@ class App {
 
     // 커스텀 알림 모달 (브라우저 도메인 URL 메시지 일체 없음)
     showModalAlert(message, title = '알 림', icon = '👑') {
-        if (!this.dom || !this.dom.customAlertModal) {
-            return;
+        const modal = this.dom && this.dom.customAlertModal ? this.dom.customAlertModal : document.getElementById('customAlertModal');
+        const alertIcon = this.dom && this.dom.customAlertIcon ? this.dom.customAlertIcon : document.getElementById('customAlertIcon');
+        const alertTitle = this.dom && this.dom.customAlertTitle ? this.dom.customAlertTitle : document.getElementById('customAlertTitle');
+        const alertMsg = this.dom && this.dom.customAlertMessage ? this.dom.customAlertMessage : document.getElementById('customAlertMessage');
+
+        if (modal) {
+            if (alertIcon) alertIcon.textContent = icon;
+            if (alertTitle) alertTitle.textContent = title;
+            if (alertMsg) alertMsg.textContent = message;
+            modal.classList.add('active');
+        } else if (typeof window.__showCustomAlert === 'function') {
+            window.__showCustomAlert(message, title, icon);
+        } else {
+            console.warn('[Alert Blocked]:', message);
         }
-        if (this.dom.customAlertIcon) this.dom.customAlertIcon.textContent = icon;
-        if (this.dom.customAlertTitle) this.dom.customAlertTitle.textContent = title;
-        if (this.dom.customAlertMessage) this.dom.customAlertMessage.textContent = message;
-        this.dom.customAlertModal.classList.add('active');
     }
 
     // 커스텀 확인 모달
@@ -515,12 +530,17 @@ class App {
         if (this.dom.formFindId) {
             this.dom.formFindId.addEventListener('submit', (e) => {
                 e.preventDefault();
+                if (this.dom.findIdErrorNotice) this.dom.findIdErrorNotice.style.display = 'none';
                 const nick = this.dom.findIdNickname.value.trim();
                 const phone = this.dom.findIdPhone ? this.dom.findIdPhone.value.trim() : '';
                 const res = window.authManager.findUsername(nick, phone);
                 if (res.success) {
                     this.showModalAlert(`조회 결과 회원님의 아이디(이메일)는 다음과 같습니다:\n\n👉 [ ${res.maskedUsername} ]`, '아이디 찾기 결과', '🔍');
                 } else {
+                    if (this.dom.findIdErrorNotice) {
+                        this.dom.findIdErrorNotice.textContent = res.message;
+                        this.dom.findIdErrorNotice.style.display = 'block';
+                    }
                     this.showModalAlert(res.message, '조회 실패', '⚠️');
                 }
             });
@@ -530,6 +550,7 @@ class App {
         if (this.dom.formFindPw) {
             this.dom.formFindPw.addEventListener('submit', (e) => {
                 e.preventDefault();
+                if (this.dom.findPwErrorNotice) this.dom.findPwErrorNotice.style.display = 'none';
                 const u = this.dom.findPwUsername.value.trim();
                 const res = window.authManager.issueTemporaryPassword(u);
                 if (res.success) {
@@ -537,6 +558,10 @@ class App {
                     this.dom.findAccountModal.classList.remove('active');
                     this.dom.loginModal.classList.add('active');
                 } else {
+                    if (this.dom.findPwErrorNotice) {
+                        this.dom.findPwErrorNotice.textContent = res.message;
+                        this.dom.findPwErrorNotice.style.display = 'block';
+                    }
                     this.showModalAlert(res.message, '발급 실패', '⚠️');
                 }
             });
@@ -545,6 +570,7 @@ class App {
         // 회원가입 폼 제출
         this.dom.formRegister.addEventListener('submit', (e) => {
             e.preventDefault();
+            if (this.dom.registerErrorNotice) this.dom.registerErrorNotice.style.display = 'none';
             const u = this.dom.regUsername.value.trim();
             const p = this.dom.regPassword.value;
             const nick = this.dom.regNickname.value.trim();
@@ -558,6 +584,10 @@ class App {
                 if (window.soundManager) window.soundManager.playWin();
                 this.showModalAlert(`🎉 ${res.message}\n환영합니다, [${nick}]님! (1,000만 원 지급 완료)`, '회원가입 완료', '👑');
             } else {
+                if (this.dom.registerErrorNotice) {
+                    this.dom.registerErrorNotice.textContent = res.message;
+                    this.dom.registerErrorNotice.style.display = 'block';
+                }
                 this.showModalAlert(res.message, '가입 실패', '⚠️');
             }
         });
@@ -570,6 +600,7 @@ class App {
         // 로그인 폼 제출
         this.dom.formLogin.addEventListener('submit', (e) => {
             e.preventDefault();
+            if (this.dom.loginErrorNotice) this.dom.loginErrorNotice.style.display = 'none';
             const u = this.dom.loginUsername.value.trim();
             const p = this.dom.loginPassword.value;
 
@@ -580,6 +611,10 @@ class App {
                 this.dom.loginModal.classList.remove('active');
                 this.showModalAlert(`반갑습니다, [${res.user.nickname}]님!\n즐거운 7포커 게임 되십시오.`, '로그인 성공', '👋');
             } else {
+                if (this.dom.loginErrorNotice) {
+                    this.dom.loginErrorNotice.textContent = res.message;
+                    this.dom.loginErrorNotice.style.display = 'block';
+                }
                 this.showModalAlert(res.message, '로그인 실패', '⚠️');
             }
         });
